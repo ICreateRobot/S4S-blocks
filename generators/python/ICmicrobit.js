@@ -697,7 +697,7 @@ Blockly.Python['MicrobitIcreate_ICM_showSelfImage'] = function(block) {
     let matrix = Blockly.Python.valueToCode(block, 'MATRIX',Blockly.Python.ORDER_NONE).replace(/1/g, '9');
     let result = matrix.match(/.{1,5}/g).join(':');//每5个字符分割一次
     
-    const pythonCode = `display.show(Image("${result}"))\n`;
+    return `display.show(Image("${result}"))\n`;
 
     let parent = block;
     while (parent.getParent()) {

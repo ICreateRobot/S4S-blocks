@@ -34,16 +34,16 @@ Blockly.Python['control_wait'] = function(block) {
         code = "time.sleep(" + arg0/1000 + ")\n";
     }
 
-    // let parent=block
-    // while (parent.getParent()) {
-    //     parent = parent.getParent();
-    // }
-	// if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+    let parent=block
+    while (parent.getParent()) {
+        parent = parent.getParent();
+    }
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         Blockly.Python.definitions_['import time'] = "import time";
         return code;
-    // }else{
-    //     return ''
-    // }
+    }else{
+        return ''
+    }
 };
 
 Blockly.Python['control_repeat'] = function(block) {
@@ -63,7 +63,7 @@ Blockly.Python['control_repeat'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''
@@ -87,7 +87,7 @@ Blockly.Python['control_forever'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''
@@ -115,7 +115,7 @@ Blockly.Python['control_if'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''
@@ -147,7 +147,7 @@ Blockly.Python['control_if_else'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''
@@ -164,7 +164,7 @@ Blockly.Python['control_wait_until'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition'){
         return code;
     }else{
         return ''
@@ -185,7 +185,7 @@ Blockly.Python['control_repeat_until'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''
@@ -212,7 +212,7 @@ Blockly.Python['control_while'] = function(block) {
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
         return code;
     }else{
         return ''

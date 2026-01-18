@@ -140,9 +140,8 @@ Blockly.Python.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Python.finish = function(code) {
-    // alert(code)
-    console.log('finish----', code)
-        // Convert the imports dictionary into a list.
+    //console.log('finish----', code)
+    // Convert the imports dictionary into a list.
     var imports = [];
     for (var name in Blockly.Python.imports_) {
         imports.push(Blockly.Python.imports_[name]);
@@ -178,6 +177,10 @@ Blockly.Python.finish = function(code) {
     if (imports.length !== 0) {
         ret += imports.join('\n') + "\n\n";
     }
+    // variables
+    if (variables.length !== 0) {
+        ret += variables.join('\n') + "\n\n";
+    }
     // custom function definitions
     if (customFunctions.length !== 0) {
         ret += customFunctions.join('\n') + "\n";
@@ -191,10 +194,7 @@ Blockly.Python.finish = function(code) {
         ret += "def repeat():\n" + Blockly.Python.INDENT;
         ret += loops.join('\n' + Blockly.Python.INDENT) + "\n\n";
     }
-    // variables
-    // if (variables.length !== 0) {
-    //     ret += variables.join('\n') + "\n\n";
-    // }
+   
     // setups
     if (setups.length !== 0) {
         ret += setups.join('\n') + "\n\n";
@@ -260,15 +260,15 @@ Blockly.Python.scrub_ = function(block, code) {
         return '';
     }
     var commentCode = '';
-    // Only collect comments for blocks that aren't inline.
+    // Only collect comments for blocks that aren't inline.判断是不是“语句块”
     if (!block.outputConnection || !block.outputConnection.targetConnection) {
-        // Collect comment for this block.
+        // Collect comment for this block.Blockly 里右键写的注释变成#
         var comment = block.getCommentText();
         if (comment) {
             commentCode += Blockly.Python.prefixLines(comment, '# ') + '\n';
         }
         // Collect comments for all value arguments.
-        // Don't collect comments for nested statements.
+        // Don't collect comments for nested statements.取所有「值输入」上的嵌套注释
         for (var x = 0; x < block.inputList.length; x++) {
             if (block.inputList[x].type == Blockly.INPUT_VALUE) {
                 var childBlock = block.inputList[x].connection.targetBlock();
@@ -282,27 +282,27 @@ Blockly.Python.scrub_ = function(block, code) {
         }
     }
 
-    var codeWithIndent = code;
+    var codeWithIndent = code;//复制一份 code（准备做缩进处理）
     // At this step if block is not surround by a parent and it is not empty,
     // and it is a hat block, and it is not 'event_whenmicrobitbegin' block.
     // mean's it is in a function or it is custom function, add indent
     // at start of every line.
-    // if (block.getSurroundParent() === null && code !== "" && block.previousConnection !== null &&
-    //     block.getTopStackBlock().type !== 'event_whenmicrobitbegin') {
-    //     // Add indent at start except custom function
-    //     var isTopLevelBlock = block.getTopStackBlock() === block;
-    //     if (!isTopLevelBlock && block.type !== 'procedures_definition' &&
-    //         block.type !== 'procedures_prototype') {
-    //         codeWithIndent = Blockly.Python.INDENT + codeWithIndent;
-    //         if (commentCode !== '') {
-    //             commentCode = Blockly.Python.INDENT +commentCode;
-    //         }
-    //     }
-    //     codeWithIndent = codeWithIndent.replace(/\n/g, "\n" + Blockly.Python.INDENT);
-    //     // Delet final indent
-    //     codeWithIndent = codeWithIndent.slice(0, codeWithIndent.length - 2);
-    // }
-
+    if (block.getSurroundParent() === null && code !== "" && block.previousConnection !== null &&
+        block.getTopStackBlock().type !== 'event_when') {
+        // Add indent at start except custom function
+        var isTopLevelBlock = block.getTopStackBlock() === block;
+        if (!isTopLevelBlock && block.type !== 'procedures_definition' &&
+            block.type !== 'procedures_prototype') {
+            codeWithIndent = Blockly.Python.INDENT + codeWithIndent;
+            if (commentCode !== '') {
+                commentCode = Blockly.Python.INDENT +commentCode;
+            }
+        }
+        codeWithIndent = codeWithIndent.replace(/\n/g, "\n" + Blockly.Python.INDENT);
+        // Delet final indent
+        codeWithIndent = codeWithIndent.slice(0, codeWithIndent.length - 2);
+    }
+    
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = Blockly.Python.blockToCode(nextBlock);
     return commentCode + codeWithIndent + nextCode;
