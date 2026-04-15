@@ -132,42 +132,42 @@ Blockly.Blocks['control_if'] = {
   }
 };
 
-Blockly.Blocks['control_if_else'] = {
-  /**
-   * Block for if-else.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "type": "control_if_else",
-      "message0": Blockly.Msg.CONTROL_IF,
-      "message1": "%1",
-      "message2": Blockly.Msg.CONTROL_ELSE,
-      "message3": "%1",
-      "args0": [
-        {
-          "type": "input_value",
-          "name": "CONDITION",
-          "check": "Boolean"
-        }
-      ],
-      "args1": [
-        {
-          "type": "input_statement",
-          "name": "SUBSTACK"
-        }
-      ],
-      "args3": [
-        {
-          "type": "input_statement",
-          "name": "SUBSTACK2"
-        }
-      ],
-      "category": Blockly.Categories.control,
-      "extensions": ["colours_control", "shape_statement"]
-    });
-  }
-};
+// Blockly.Blocks['control_if_else'] = {
+//   /**
+//    * Block for if-else.
+//    * @this Blockly.Block
+//    */
+//   init: function() {
+//     this.jsonInit({
+//       "type": "control_if_else",
+//       "message0": Blockly.Msg.CONTROL_IF,
+//       "message1": "%1",
+//       "message2": Blockly.Msg.CONTROL_ELSE,
+//       "message3": "%1",
+//       "args0": [
+//         {
+//           "type": "input_value",
+//           "name": "CONDITION",
+//           "check": "Boolean"
+//         }
+//       ],
+//       "args1": [
+//         {
+//           "type": "input_statement",
+//           "name": "SUBSTACK"
+//         }
+//       ],
+//       "args3": [
+//         {
+//           "type": "input_statement",
+//           "name": "SUBSTACK2"
+//         }
+//       ],
+//       "category": Blockly.Categories.control,
+//       "extensions": ["colours_control", "shape_statement"]
+//     });
+//   }
+// };
 
 Blockly.Blocks['control_stop'] = {
   /**
@@ -541,77 +541,367 @@ Blockly.Blocks['control_all_at_once'] = {
 };
 
 
+
+
+
+
+function svgData(svg) {
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+const PLUS_SVG = svgData(`
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+  <circle cx="11" cy="11" r="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+  <line x1="11" y1="6" x2="11" y2="16" stroke="#444" stroke-width="3"/>
+  <line x1="6" y1="11" x2="16" y2="11" stroke="#444" stroke-width="3"/>
+</svg>
+`);
+
+const MINUS_SVG = svgData(`
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+  <circle cx="11" cy="11" r="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+  <line x1="6" y1="11" x2="16" y2="11" stroke="#444" stroke-width="3"/>
+</svg>
+`);
+
+
+
 // 验证功能（可扩展的分支语句）
-Blockly.Blocks['control_if_plus'] = {
-  init() {
+Blockly.Blocks['control_if_else'] = {
+
+  init: function () {
+    // 记录当前 else if 的数量
     this.elseifCount_ = 0;
-    this.hasElse_ = true;
+    // 标记：block 是否已初始化完成
+    this._ready = true;
 
-    this.appendValueInput('IF0')
-      .setCheck('Boolean')
-      .appendField('如果');
+    // 使用 Scratch 原始 JSON 结构初始化 block
+    this.jsonInit({
+      "type": "control_if_else",
+      "message0": Blockly.Msg.CONTROL_IF,
+      "message1": "%1",
+      "message2": Blockly.Msg.CONTROL_ELSE,
+      "message3": "%1",
 
-    this.appendStatementInput('DO0')
-      .appendField('执行');
-
-    this.appendStatementInput('ELSE')
-      .appendField('否则');
-
-    this.appendDummyInput('BUTTONS')
-      .appendField(new Blockly.FieldImage(
-        Blockly.mainWorkspace.options.pathToMedia + 'icons/plus.svg',
-        14, 14, '*',
-        () => {
-          this.elseifCount_++;
-          this.updateShape_();
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "CONDITION",
+          "check": "Boolean"
         }
-      ))
-      .appendField(new Blockly.FieldImage(
-        Blockly.mainWorkspace.options.pathToMedia + 'icons/minus.svg',
-        14, 14, '*',
-        () => {
-          if (this.elseifCount_ > 0) {
-            this.elseifCount_--;
-            this.updateShape_();
+      ],
+      "args1": [
+        {
+          "type": "input_statement",
+          "name": "SUBSTACK"
+        }
+      ],
+      "args3": [
+        {
+          "type": "input_statement",
+          "name": "SUBSTACK2"
+        }
+      ],
+      "category": Blockly.Categories.control,
+      "extensions": ["colours_control", "shape_statement"]
+    });
+
+    //指定else位置
+    this.elseInputName_ = this.inputList[1].name;
+
+    // 创建底部的 + 按钮
+    this.createAddButton_();
+  },
+
+  // 创建 "+" 按钮
+  createAddButton_: function () {
+    const plus = new Blockly.FieldImage(
+      PLUS_SVG,
+      22,
+      22,
+      "+"
+    );
+
+    // 在 block 最底部添加一行 dummy input 放置 +
+    this.appendDummyInput("ADD")
+      .appendField(plus);
+
+    // 保存按钮引用，稍后绑定点击事件
+    this.plusField_ = plus;
+  },
+
+
+  // block SVG 初始化完成后绑定点击事件
+  initSvg: function () {
+    // 先调用原始 Blockly 的 initSvg
+    Blockly.BlockSvg.prototype.initSvg.call(this);
+
+    if (this._plusBound) return; // 防止重复绑定
+    this._plusBound = true;
+
+    const field = this.plusField_;
+
+    if (field && field.getSvgRoot()) {
+      field.getSvgRoot().style.cursor = "pointer",
+      // 绑定 + 按钮点击事件
+      Blockly.bindEventWithChecks_(
+        field.getSvgRoot(),
+        "mousedown",
+        this,
+        function (e) {
+          e.stopPropagation();// 阻止 Blockly 的 drag 事件
+          this.addElseIf_();
+        }
+      );
+    }
+  },
+
+  // 新增一个 else if
+  addElseIf_: function () {
+    console.log("add")
+    this.createElseIf_(this.elseifCount_);
+    this.elseifCount_++;
+    
+    this.initSvg();
+    // // 重新渲染 block
+    this.render();
+
+    Blockly.Events.fire(
+    new Blockly.Events.BlockChange(
+      this,
+      'mutation',
+      null,
+      null,
+      null
+    )
+  );
+  
+  },
+
+  // 删除某一个 else if
+  removeElseIf_: function (index) {
+    // 删除当前
+    this.removeInput("ELSEIF_CONDITION" + index);
+    this.removeInput("ELSEIF_THEN" + index);
+    this.removeInput("ELSEIF_SUBSTACK" + index, false);
+
+    // 后面的 index 前移
+    for (let i = index + 1; i < this.elseifCount_; i++) {
+      const newIndex = i - 1;
+
+      const cond = this.getInput("ELSEIF_CONDITION" + i);
+      const then = this.getInput("ELSEIF_THEN" + i);
+      const stack = this.getInput("ELSEIF_SUBSTACK" + i);
+
+      if (cond) cond.name = "ELSEIF_CONDITION" + newIndex;
+      if (then) {
+        then.name = "ELSEIF_THEN" + newIndex;
+        // 更新按钮 index
+        const field = then.fieldRow.find(f => f._elseifIndex !== undefined);
+        if (field) field._elseifIndex = newIndex;
+      }
+      if (stack) stack.name = "ELSEIF_SUBSTACK" + newIndex;
+    }
+
+    this.elseifCount_--;
+    this.render();
+    Blockly.Events.fire(
+  new Blockly.Events.BlockChange(
+    this,
+    'mutation',
+    null,
+    null,
+    null
+  ))
+    
+  },
+
+  createElseIf_: function(index){
+    const remove = new Blockly.FieldImage(
+      MINUS_SVG,
+      22,
+      22,
+      "-"
+    );
+    remove._elseifIndex = index;
+
+    // 条件输入
+    this.appendValueInput("ELSEIF_CONDITION" + index)
+      .setCheck("Boolean")
+      .appendField(Blockly.Msg.CONTROL_ELSE +" "+ Blockly.Msg.CONTROL_IF_IF);
+    // then -
+    this.appendDummyInput("ELSEIF_THEN" + index)
+      .appendField(Blockly.Msg.CONTROL_IF_THEN)
+      .appendField(remove);
+    // 口子
+    this.appendStatementInput("ELSEIF_SUBSTACK" + index);
+
+    // 调整到指定为止
+    // const elseInput = this.inputList.find(i =>
+    //   i.fieldRow.some(f => f.getText && f.getText() === Blockly.Msg.CONTROL_ELSE)
+    // );
+    // 插入 else if
+    this.moveInputBefore("ELSEIF_CONDITION" + index, "ADD");//条件
+    this.moveInputBefore("ELSEIF_THEN" + index, "ADD");
+    this.moveInputBefore("ELSEIF_SUBSTACK" + index, "ADD");//口子
+    // 把 else label 移到底部
+    //if (elseInput) {
+      this.moveInputBefore(this.elseInputName_, "ADD");
+    //}
+    // 最后移动 else 的口子
+    this.moveInputBefore("SUBSTACK2", "ADD");
+
+    const field = remove;
+
+    // 等 SVG 渲染完成后绑定 - 按钮事件
+    setTimeout(() => {
+      if (field.getSvgRoot()) {
+        field.getSvgRoot().style.cursor = "pointer",
+        Blockly.bindEventWithChecks_(
+          field.getSvgRoot(),
+          "mousedown",
+          this,
+          (e) => {
+            const idx = field._elseifIndex;
+            this.removeElseIf_(idx);
           }
-        }
-      ));
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setColour(Blockly.Colours.control.primary);
-
-    this.updateShape_();
+        );
+      }
+    }, 0);
+    // // else if 数量 +1
+    // this.elseifCount_++;
   },
 
-  updateShape_() {
-    // 先移除旧的 elseif
-    let i = 1;
-    while (this.getInput('IF' + i)) {
-      this.removeInput('IF' + i);
-      this.removeInput('DO' + i);
-      i++;
-    }
+  // 新增的--用于重新恢复处理
+  rebuildShape_: function () {
+    console.log("rebuild")
+    // 删除旧的 elseif
+    // for (let i = this.elseifCount_ - 1; i >= 0; i--) {
+    //   const cond = this.getInput("ELSEIF_CONDITION" + i);
+    //   const then = this.getInput("ELSEIF_THEN" + i);
+    //   const stack = this.getInput("ELSEIF_SUBSTACK" + i);
 
-    // 添加新的 elseif
-    for (let i = 1; i <= this.elseifCount_; i++) {
-      this.appendValueInput('IF' + i)
-        .setCheck('Boolean')
-        .appendField('否则如果');
+    //   // ⭐ 关键：断开连接（包括 shadow）
+    //   [cond, then, stack].forEach(input => {
+    //     if (input && input.connection) {
+    //       const target = input.connection.targetBlock();
+    //       if (target) {
+    //         target.dispose(); // 🔥 直接销毁 shadow
+    //       }
+    //     }
+    //   });
 
-      this.appendStatementInput('DO' + i)
-        .appendField('执行');
+    //   if (cond) this.removeInput(cond.name);
+    //   if (then) this.removeInput(then.name);
+    //   if (stack) this.removeInput(stack.name);
+    // }
+    // // 重新创建
+    // for (let i = 0; i < this.elseifCount_; i++) {
+    //   this.createElseIf_(i);
+    // }
+    
+    //this.initSvg();
+    // 重新渲染 block
+    //this.render();
+
+    for (let i = 0; i < this.elseifCount_; i++) {
+      if (!this.getInput("ELSEIF_CONDITION" + i)) {
+        this.createElseIf_(i);
+      }
     }
+    this.render();
   },
 
-  mutationToDom() {
-    const container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('elseif', this.elseifCount_);
+  // 保存 mutation（用于项目保存）
+  mutationToDom: function () {
+    console.log("mutationToDom");
+
+    if (!this.workspace || this.workspace.isFlyout || !this.workspace.rendered) {
+      return null;
+    }
+
+    console.log("start_mutationToDom", this.elseifCount_);
+
+    //container.setAttribute("elseif", this.elseifCount_);
+    let count = 0;
+    // 👉 优先从结构读
+    while (this.getInput("ELSEIF_CONDITION" + count)) {
+      count++;
+    }
+    // ❗ 如果结构还没恢复（关键）
+    if (count === 0 && this.elseifCount_ > 0) {
+      count = this.elseifCount_;
+    }
+
+    const container = document.createElement("mutation");
+    container.setAttribute("elseif", count);
+
     return container;
   },
 
-  domToMutation(xml) {
-    this.elseifCount_ = Number(xml.getAttribute('elseif')) || 0;
-    this.updateShape_();
+  // 从 XML 恢复 mutation  (拖动就执行)
+  domToMutation: function (xmlElement) {
+    if (!this.workspace || !this.workspace.rendered || this.workspace.isFlyout) {
+      console.log("🚫 skip domToMutation (workspace destroyed)");
+      return;
+    }
+
+    this.elseifCount_ =parseInt(xmlElement.getAttribute("elseif"), 10) || 0;
+    console.log("domToMutation",this.elseifCount_)
+    
+    if (this.elseifCount_ > 0) {
+      this.rebuildShape_();
+    }
+  }
+};
+
+
+
+
+
+
+
+// ---------for循环 --------------
+Blockly.Blocks['control_for_loop'] = {
+  init: function () {
+    this.jsonInit({
+      "type": "control_for_loop",
+
+      "message0": "for %1 from %2 to %3 step %4",
+
+      "args0": [
+        {
+          "type": "field_variable",
+          "name": "VAR",
+          "variable": "i"
+        },
+        {
+          "type": "input_value",
+          "name": "FROM"
+        },
+        {
+          "type": "input_value",
+          "name": "TO"
+        },
+        {
+          "type": "input_value",
+          "name": "STEP"
+        }
+      ],
+
+      "message1": "%1",
+      "args1": [
+        {
+          "type": "input_statement",
+          "name": "SUBSTACK"
+        }
+      ],
+
+      "previousStatement": null,
+      "nextStatement": null,
+
+      "category": Blockly.Categories.control,
+      "extensions": ["colours_control", "shape_statement"]
+    });
   }
 };
