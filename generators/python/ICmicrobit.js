@@ -319,6 +319,37 @@ Blockly.Python['MicrobiteIcreateP_ICM_Elecmagnet'] = function(block) {
     }
     return "";
 };
+//加速度
+Blockly.Python['MicrobitIcreate_ICM_acceleration'] = function(block) {
+  const CHOICE = block.getFieldValue('CHOICE');
+  
+  const pythonCode = `Link_transducer.gyro_acc('${CHOICE}')`;
+
+  let parent = block;
+  while (parent.getParent()) {
+    parent = parent.getParent();
+  }
+  if (parent.type === 'event_whenflagclicked' || parent.type=='event_when' || parent.type=='procedures_definition') {
+    return [pythonCode, Blockly.Python.ORDER_NONE];
+  }
+  return "";
+};
+//设置引脚上拉下拉
+Blockly.Python['MicrobitIcreate_ICM_pinInput'] = function(block) {
+  const CHOICE = block.getFieldValue('CHOICE');
+  const TYPE = block.getFieldValue('TYPE');
+  
+  const pythonCode = `pin${CHOICE}.set_pull(pin${CHOICE}.${TYPE})\n`;
+
+  let parent = block;
+  while (parent.getParent()) {
+    parent = parent.getParent();
+  }
+  if (parent.type === 'event_whenflagclicked' || parent.type=='event_when' || parent.type=='procedures_definition') {
+    return pythonCode;
+  }
+  return "";
+};
 
 //读取位置
 Blockly.Python['MicrobiteIcreateP_ICM_ICmotor_readPos'] = function(block) {
@@ -779,7 +810,7 @@ Blockly.Python['MicrobitIcreate_ICM_showToggle'] = function(block) {
     const x = Blockly.Python.valueToCode(block, 'X',Blockly.Python.ORDER_NONE);
     const y = Blockly.Python.valueToCode(block, 'Y',Blockly.Python.ORDER_NONE);
     
-    const pythonCode = `toggle(${x},${y})\n`;
+    const pythonCode = `display_toggle_pixel(${x},${y})\n`;
 
     let parent = block;
     while (parent.getParent()) {
@@ -882,7 +913,7 @@ Blockly.Python['MicrobitIcreate_ICM_buttonPressed'] = function(block) {
     if( choice == 'A'){
         code = `button_a.is_pressed()`
     }else if(choice == 'B'){
-      code = `button_a.is_pressed()`
+      code = `button_b.is_pressed()`
     }
     
     const pythonCode = `${code}`;
@@ -1188,8 +1219,7 @@ Blockly.Python['MicrobitIcreate_ICM_uartWrite'] = function(block) {
 
 //串口读取
 Blockly.Python['MicrobitIcreate_ICM_uartRead'] = function(block) {
-    const Text = Blockly.Python.valueToCode(block, 'TEXT',Blockly.Python.ORDER_NONE);
-    const pythonCode = `uartReadLine() == b${Text}`;
+    const pythonCode = `link_uart.readline()`;
 
     let parent = block;
     while (parent.getParent()) {
@@ -1201,12 +1231,57 @@ Blockly.Python['MicrobitIcreate_ICM_uartRead'] = function(block) {
     return "";
 };
 
+Blockly.Python['MicrobitIcreate_ICM_uartReadUntil'] = function(block) {
+  const CHOICE = block.getFieldValue('CHOICE');
+  let pythonCode= `link_uart.readstring('${CHOICE}')`;
+ 
+  
 
+  let parent = block;
+  while (parent.getParent()) {
+    parent = parent.getParent();
+  }
+  if ( parent.type=='event_when' || parent.type=='procedures_definition') {
+    return [pythonCode, Blockly.Python.ORDER_NONE];
+  }
+  return "";
+};
+
+//串口重定向到tx,rx
+Blockly.Python['MicrobitIcreate_ICM_uartRedirect'] = function(block) {
+  const CHOICE = block.getFieldValue('CHOICE');
+  const TX = block.getFieldValue('TX');
+  const RX = block.getFieldValue('RX');
+  const pythonCode = `link_uart.init(${CHOICE},'${TX}','${RX}')\n`;
+
+  let parent = block;
+  while (parent.getParent()) {
+    parent = parent.getParent();
+  }
+  if ( parent.type=='event_when' || parent.type=='procedures_definition') {
+    return pythonCode;
+  }
+  return "";
+};
+//串口重定向到usb
+Blockly.Python['MicrobitIcreate_ICM_uartRedirectUSB'] = function(block) {
+ 
+  const pythonCode = `link_uart.redirect_usb_uart()\n`;
+
+  let parent = block;
+  while (parent.getParent()) {
+    parent = parent.getParent();
+  }
+  if ( parent.type=='event_when' || parent.type=='procedures_definition') {
+    return pythonCode;
+  }
+  return "";
+};
 
 //数字写入
 Blockly.Python['MicrobitIcreate_ICM_digitalWrite'] = function(block) {
   const choice = block.getFieldValue('CHOICE');
-  const Text = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE);
+  const Text = block.getFieldValue('TEXT');
   const pythonCode = `pin${choice}.write_digital(${Text})\n`;
   
   let parent = block;
@@ -1223,7 +1298,7 @@ Blockly.Python['MicrobitIcreate_ICM_digitalWrite'] = function(block) {
 Blockly.Python['MicrobitIcreate_ICM_digitalRead'] = function(block) {
   const choice = block.getFieldValue('CHOICE');
 
-  const pythonCode = `pin${choice}.read_digital()`;
+  const pythonCode = `pin${choice}.read_digital()==1`;
   
   let parent = block;
   while (parent.getParent()) {
@@ -1268,7 +1343,77 @@ Blockly.Python['MicrobitIcreate_ICM_analogRead'] = function(block) {
   return "";
 };
 
+//无线电
+Blockly.Python['MicrobitIcreate_ICM_radioSetGroup'] = function(block) {
+  const choice = block.getFieldValue('CHOICE');
+  const Text = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE);
+  const pythonCode = `radio.config(group=${Text},power=${choice})\n`;
+  
+  let parent = block;
+  while (parent.getParent()) {
+      parent = parent.getParent();
+  }
+  if (parent.type === 'event_when' || parent.type === 'procedures_definition') {
+      return pythonCode;
+  }
+  return "";
+};
 
+Blockly.Python['MicrobitIcreate_ICM_radioSend'] = function(block) {
+  const Text = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE);
+  const pythonCode = `radio.send(${Text})\n`;
+  
+  let parent = block;
+  while (parent.getParent()) {
+      parent = parent.getParent();
+  }
+  if (parent.type === 'event_when' || parent.type === 'procedures_definition') {
+      return pythonCode;
+  }
+  return "";
+};
+Blockly.Python['MicrobitIcreate_ICM_radioRecive'] = function(block) {
+  const pythonCode = `radio.receive()`;
+  
+  let parent = block;
+  while (parent.getParent()) {
+      parent = parent.getParent();
+  }
+  if (parent.type === 'event_when' || parent.type === 'procedures_definition') {
+      return [pythonCode, Blockly.Python.ORDER_NONE];
+  }
+  return "";
+};
+//播放音调
+Blockly.Python['MicrobitIcreate_ICM_playSpeaker'] = function(block) {
+  const VALUE = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_NONE);
+  const HZ = Blockly.Python.valueToCode(block, 'HZ', Blockly.Python.ORDER_NONE);
+  const volume = Math.round(VALUE * 255 / 100);
+  const pythonCode = `Link_buzzer.pitch(${HZ},${volume})\n`;
+  
+  let parent = block;
+  while (parent.getParent()) {
+      parent = parent.getParent();
+  }
+  if (parent.type === 'event_when' || parent.type === 'procedures_definition') {
+      return pythonCode;
+  }
+  return "";
+};
+//停止播放音调
+Blockly.Python['MicrobitIcreate_ICM_stopSpeaker'] = function(block) {
+ 
+  const pythonCode = `Link_buzzer.stop()\n`;
+  
+  let parent = block;
+  while (parent.getParent()) {
+      parent = parent.getParent();
+  }
+  if (parent.type === 'event_when' || parent.type === 'procedures_definition') {
+      return pythonCode;
+  }
+  return "";
+};
 
 //########################################################################################
 
@@ -1346,6 +1491,7 @@ let DICT_magnetStrengthPlay = {
     'Y': "get_y",
     'Z': "get_z",
     '强度': "get_field_strength",
+    'absolute': "get_field_strength",
     'Intensity': "get_field_strength" // 添加英文键
 }
 

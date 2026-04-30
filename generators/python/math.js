@@ -77,3 +77,5 @@ Blockly.Python['numres0D23'] = Blockly.Python['math_number'];
 Blockly.Python['numres0D59'] = Blockly.Python['math_number'];
 Blockly.Python['numres0D1'] = Blockly.Python['math_number'];
 Blockly.Python['numres0D1023'] = Blockly.Python['math_number'];
+Blockly.Python['numres0D1000'] = Blockly.Python['math_number'];
+Blockly.Python['numres1D60'] = Blockly.Python['math_number'];
