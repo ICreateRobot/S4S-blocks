@@ -1219,7 +1219,7 @@ Blockly.Python['MicrobitIcreate_ICM_uartWrite'] = function(block) {
 
 //串口读取
 Blockly.Python['MicrobitIcreate_ICM_uartRead'] = function(block) {
-    const pythonCode = `link_uart.readline()`;
+    const pythonCode = `Link_uart.readline()`;
 
     let parent = block;
     while (parent.getParent()) {
@@ -1233,7 +1233,7 @@ Blockly.Python['MicrobitIcreate_ICM_uartRead'] = function(block) {
 
 Blockly.Python['MicrobitIcreate_ICM_uartReadUntil'] = function(block) {
   const CHOICE = block.getFieldValue('CHOICE');
-  let pythonCode= `link_uart.readstring('${CHOICE}')`;
+  let pythonCode= `Link_uart.readstring('${CHOICE}')`;
  
   
 
@@ -1252,7 +1252,7 @@ Blockly.Python['MicrobitIcreate_ICM_uartRedirect'] = function(block) {
   const CHOICE = block.getFieldValue('CHOICE');
   const TX = block.getFieldValue('TX');
   const RX = block.getFieldValue('RX');
-  const pythonCode = `link_uart.init(${CHOICE},'${TX}','${RX}')\n`;
+  const pythonCode = `Link_uart.init(${CHOICE},'${TX}','${RX}')\n`;
 
   let parent = block;
   while (parent.getParent()) {
@@ -1266,7 +1266,7 @@ Blockly.Python['MicrobitIcreate_ICM_uartRedirect'] = function(block) {
 //串口重定向到usb
 Blockly.Python['MicrobitIcreate_ICM_uartRedirectUSB'] = function(block) {
  
-  const pythonCode = `link_uart.redirect_usb_uart()\n`;
+  const pythonCode = `Link_uart.redirect_usb_uart()\n`;
 
   let parent = block;
   while (parent.getParent()) {

@@ -433,7 +433,7 @@ Blockly.Python['MicrobiteIcreateS4S_ICM_S4S_gyro'] = function(block) {
 //语音模块
 Blockly.Python['LinkBotSensors_ICM_S4S_voice'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
-    const pythonCode = `voice.recognized('${pinChoice}')`;
+    const pythonCode = `voice.recognized(voice.${pinChoice})`;
     
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
