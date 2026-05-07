@@ -7,33 +7,36 @@ goog.require('Blockly.Python');
 
 //#############################################视觉模块###########################################
 
-
+// function isCurrentBlockHat(currentBlock){
+//     let parent = currentBlock;
+//     let hatBlock='event_when'
+//     while (parent.getParent()) {
+//         parent = parent.getParent();
+//     }
+//     if (parent.type === hatBlock || parent.type === 'procedures_definition') {
+//         return true;
+//     }else{
+//         return false
+//     }
+// }
 
 //设置模式
 Blockly.Python['ICreateK210_settings'] = function(block) {
   const Text = block.getFieldValue('TWO');
   
-  const pythonCode = `aiVision.set_sys_mode(${Text})\n`;
+  const pythonCode = `vision.set_mode(vision.${Text})\n`;
 
-  let parent = block;
-  while (parent.getParent()) {
-    parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-    return pythonCode;
+  if(isCurrentBlockHat(block)){
+    return pythonCode
   }
   return "";
 };
 
 //获取模式
 Blockly.Python['ICreateK210_currentMode'] = function(block) {
-  const pythonCode = `aiVision.get_sys_mode()`;
+  const pythonCode = `vision.get_mode()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-    parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
+  if(isCurrentBlockHat(block)){
     return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
@@ -44,20 +47,10 @@ Blockly.Python['ICreateK210_currentMode'] = function(block) {
 Blockly.Python['ICreateK210_colorRecogn'] = function(block) {
   const dropdown_one = block.getFieldValue('ONE');
   
-  const pythonCode = `aiVision.get_color_rgb()`;
+  const pythonCode = `vision.color_value(vision.${dropdown_one})`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      if (dropdown_one === 'r') {
-          return [`${pythonCode}[0]`, Blockly.Python.ORDER_NONE];
-      } else if (dropdown_one === 'g') {
-          return [`${pythonCode}[1]`, Blockly.Python.ORDER_NONE];
-      } else if (dropdown_one === 'b') {
-          return [`${pythonCode}[2]`, Blockly.Python.ORDER_NONE];
-      }
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -67,28 +60,20 @@ Blockly.Python['ICreateK210_colorRecogn'] = function(block) {
 Blockly.Python['ICreateK210_colorBlockSet'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const pythonCode = `aiVision.set_find_color(ai_camera.patch_color_tab[${ONE}])\n`;
+  const pythonCode = `vision.set_color(vision.${ONE})\n`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return pythonCode;
+  if(isCurrentBlockHat(block)){
+    return pythonCode
   }
   return "";
 };
 
 //是否追踪到色块
 Blockly.Python['ICreateK210_colorIsTrack'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_PATCH) > 0`;
+  const pythonCode = `vision.color_detected()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -96,27 +81,10 @@ Blockly.Python['ICreateK210_colorIsTrack'] = function(block) {
 //获取色块位置信息
 Blockly.Python['ICreateK210_colorBlockInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_PATCH)`;
+  const pythonCode = `vision.color_position(vision.${ONE})`;
   
-  let pythonCode = '';
-  if (ONE === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (ONE === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (ONE === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (ONE === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -124,42 +92,30 @@ Blockly.Python['ICreateK210_colorBlockInfo'] = function(block) {
 //#############################################标签识别模块###########################################
 //获取标签数量
 Blockly.Python['ICreateK210_tagNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_TAG)`;
+  const pythonCode = `vision.tag_count()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
 
 //获取标签内容
 Blockly.Python['ICreateK210_tagCont'] = function(block) {
-  const pythonCode = `aiVision.get_identify_id(ai_camera.AI_CAMERA_TAG)`;
+  const pythonCode = `vision.tag_id()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
 
 //获取标签旋转角度
 Blockly.Python['ICreateK210_tagAngle'] = function(block) {
-  const pythonCode = `aiVision.get_identify_rotation(ai_camera.AI_CAMERA_TAG)`;
+  const pythonCode = `vision.tag_rotation()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -167,27 +123,10 @@ Blockly.Python['ICreateK210_tagAngle'] = function(block) {
 //获取标签位置信息
 Blockly.Python['ICreateK210_tagInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_TAG)`;
+  const pythonCode = `vision.tag_position(vision.${ONE})`;
   
-  let pythonCode = '';
-  if (ONE === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (ONE === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (ONE === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (ONE === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -195,14 +134,10 @@ Blockly.Python['ICreateK210_tagInfo'] = function(block) {
 //#############################################线条识别模块###########################################
 //是否识别到线条
 Blockly.Python['ICreateK210_lineIsRecog'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_LINE) > 0`;
+  const pythonCode = `vision.line_detected()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -211,27 +146,10 @@ Blockly.Python['ICreateK210_lineIsRecog'] = function(block) {
 Blockly.Python['ICreateK210_lineInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_LINE, ${ONE})`;
+  const pythonCode = `vision.line_position(vision.${ONE},vision.${TWO})`;
   
-  let pythonCode = '';
-  if (TWO === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (TWO === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (TWO === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (TWO === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -239,14 +157,10 @@ Blockly.Python['ICreateK210_lineInfo'] = function(block) {
 //#############################################20类物体识别模块###########################################
 //获取物体数量
 Blockly.Python['ICreateK210_objectNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_20_CLASS)`;
+  const pythonCode = `vision.object_count()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -254,14 +168,10 @@ Blockly.Python['ICreateK210_objectNum'] = function(block) {
 //是否识别到指定物体
 Blockly.Python['ICreateK210_objectIsRecogn'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const pythonCode = `aiVision.get_identify_id(ai_camera.AI_CAMERA_20_CLASS) == ${ONE}`;
+  const pythonCode = `vision.object_detected(vision.${ONE})`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -269,27 +179,10 @@ Blockly.Python['ICreateK210_objectIsRecogn'] = function(block) {
 //获取物体位置信息
 Blockly.Python['ICreateK210_objInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_20_CLASS)`;
+  const pythonCode = `vision.object_position(vision.${ONE})`;
   
-  let pythonCode = '';
-  if (ONE === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (ONE === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (ONE === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (ONE === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -297,28 +190,20 @@ Blockly.Python['ICreateK210_objInfo'] = function(block) {
 //#############################################二维码识别模块###########################################
 //是否识别到二维码
 Blockly.Python['ICreateK210_qrIsRecogn'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_QRCODE) > 0`;
+  const pythonCode = `vision.qr_detected()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
 
 //获取二维码内容
 Blockly.Python['ICreateK210_qrCont'] = function(block) {
-  const pythonCode = `aiVision.get_qrcode_content()`;
+  const pythonCode = `vision.qr_data()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -326,27 +211,10 @@ Blockly.Python['ICreateK210_qrCont'] = function(block) {
 //获取二维码位置信息
 Blockly.Python['ICreateK210_qrInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_QRCODE)`;
+  const pythonCode = `vision.qr_position(vision.${ONE})`;
   
-  let pythonCode = '';
-  if (ONE === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (ONE === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (ONE === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (ONE === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -354,14 +222,10 @@ Blockly.Python['ICreateK210_qrInfo'] = function(block) {
 //#############################################人脸属性识别模块###########################################
 //获取人脸属性数量
 Blockly.Python['ICreateK210_faceAttrNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_FACE_ATTRIBUTE, 1)`;
+  const pythonCode = `vision.face_count()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -370,27 +234,10 @@ Blockly.Python['ICreateK210_faceAttrNum'] = function(block) {
 Blockly.Python['ICreateK210_faceAttrInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_FACE_ATTRIBUTE, ${ONE})`;
+  const pythonCode = `vision.face_position(vision.${TWO},${Number(ONE)})`;
   
-  let pythonCode = '';
-  if (TWO === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (TWO === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (TWO === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (TWO === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -399,25 +246,10 @@ Blockly.Python['ICreateK210_faceAttrInfo'] = function(block) {
 Blockly.Python['ICreateK210_faceAttrEmote'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const attribute_array = `aiVision.get_identify_face_attribute(${ONE})`;
+  const pythonCode = `vision.face_attribute(vision.${TWO},${Number(ONE)})`;
   
-  let pythonCode = '';
-  if (TWO === 1) {
-      pythonCode = `${attribute_array}[0] != 0`;  // 嘴巴是否张开
-  } else if (TWO === 2) {
-      pythonCode = `${attribute_array}[1] != 0`;  // 是否微笑
-  } else if (TWO === 3) {
-      pythonCode = `${attribute_array}[2] != 0`;  // 是否戴眼镜
-  } else {
-      pythonCode = 'False';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -425,42 +257,30 @@ Blockly.Python['ICreateK210_faceAttrEmote'] = function(block) {
 //#############################################人脸识别模块###########################################
 //人脸学习
 Blockly.Python['ICreateK210_faceLearn'] = function(block) {
-  const pythonCode = `aiVision.face_study()\n`;
+  const pythonCode = `vision.face_recognized_learn()\n`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return pythonCode;
+  if(isCurrentBlockHat(block)){
+    return pythonCode;
   }
   return "";
 };
 
 //获取人脸识别数量
 Blockly.Python['ICreateK210_faceRecogNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_FACE_RE, 1)`;
+  const pythonCode = `vision.face_recognized_count()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
 
 //获取已学习人脸数量
-Blockly.Python['ICreateK210_faceRecogLearnNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_FACE_RE, 0)`;
+Blockly.Python['ICreateK210_faceRecogLearn'] = function(block) {
+  const pythonCode = `vision.face_recognized_detected()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -469,27 +289,10 @@ Blockly.Python['ICreateK210_faceRecogLearnNum'] = function(block) {
 Blockly.Python['ICreateK210_faceRecognEmote'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_FACE_RE, ${ONE})`;
+  const pythonCode = `vision.face_recognized_position(vision.${TWO},${ONE})`;
   
-  let pythonCode = '';
-  if (TWO === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (TWO === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (TWO === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (TWO === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -498,14 +301,10 @@ Blockly.Python['ICreateK210_faceRecognEmote'] = function(block) {
 //深度学习识别
 Blockly.Python['ICreateK210_deepLearning'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const pythonCode = `aiVision.get_identify_id(ai_camera.AI_CAMERA_DEEP_LEARN) == ${ONE}`;
+  const pythonCode = `vision.class_recognized(${Number(ONE)})`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -513,14 +312,10 @@ Blockly.Python['ICreateK210_deepLearning'] = function(block) {
 //#############################################路标识别模块###########################################
 //获取路标数量
 Blockly.Python['ICreateK210_roadNum'] = function(block) {
-  const pythonCode = `aiVision.get_identify_num(ai_camera.AI_CAMERA_CARD)`;
+  const pythonCode = `vision.card_count()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -528,14 +323,16 @@ Blockly.Python['ICreateK210_roadNum'] = function(block) {
 //是否识别到指定路标
 Blockly.Python['ICreateK210_roadRecog'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const pythonCode = `aiVision.get_identify_id(ai_camera.AI_CAMERA_CARD) == ${ONE}`;
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
+  let pythonCode
+  if(ONE=='RED' || ONE=='GREEN'){
+    pythonCode=`vision.card_detected(vision.${ONE},1)`
+  }else{
+    pythonCode=`vision.card_detected(vision.${ONE},2)`
   }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  
+  
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -543,27 +340,10 @@ Blockly.Python['ICreateK210_roadRecog'] = function(block) {
 //获取路标位置信息
 Blockly.Python['ICreateK210_roadInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const position_array = `aiVision.get_identify_position(ai_camera.AI_CAMERA_CARD)`;
+  const pythonCode = `vision.card_position(vision.${ONE})`;
   
-  let pythonCode = '';
-  if (ONE === 0) {
-      pythonCode = `${position_array}[0]`;  // x坐标
-  } else if (ONE === 1) {
-      pythonCode = `${position_array}[1]`;  // y坐标
-  } else if (ONE === 2) {
-      pythonCode = `${position_array}[2]`;  // 宽度
-  } else if (ONE === 3) {
-      pythonCode = `${position_array}[3]`;  // 高度
-  } else {
-      pythonCode = '0';
-  }
-  
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
@@ -607,17 +387,13 @@ Blockly.Python['ICreateK210_lightSwitch'] = function(block) {
   
   let pythonCode = '';
   if (dropdown_one === '1') {
-      pythonCode = `aiVision.set_light_brightness(5)\n`;  // 开灯
+      pythonCode = `aiVision.set_light_brightness(1)\n`;  // 开灯
   } else {
       pythonCode = `aiVision.set_light_brightness(0)\n`;  // 关灯
   }
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return pythonCode;
+  if(isCurrentBlockHat(block)){
+    return pythonCode;
   }
   return "";
 };
@@ -626,28 +402,20 @@ Blockly.Python['ICreateK210_lightSwitch'] = function(block) {
 Blockly.Python['ICreateK210_lightBrightness'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const pythonCode = `aiVision.set_light_brightness(${ONE})\n`;
+  const pythonCode = `vision.set_fill_light_brightness(${Number(ONE)})\n`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return pythonCode;
+  if(isCurrentBlockHat(block)){
+    return pythonCode;
   }
   return "";
 };
 
 //获取灯光亮度
 Blockly.Python['ICreateK210_lightGetBrightness'] = function(block) {
-  const pythonCode = `aiVision.get_light_brightness()`;
+  const pythonCode = `vision.get_fill_light_brightness()`;
   
-  let parent = block;
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if (parent.type=='event_when' || parent.type=='procedures_definition') {
-      return [pythonCode, Blockly.Python.ORDER_NONE];
+  if(isCurrentBlockHat(block)){
+    return [pythonCode, Blockly.Python.ORDER_NONE];
   }
   return '';
 };
