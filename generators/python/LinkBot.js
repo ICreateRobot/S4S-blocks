@@ -202,7 +202,7 @@ function isCurrentBlockHat(currentBlock){
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-    if (parent.type === hatBlock || parent.type === 'procedures_definition') {
+    if (parent.type === hatBlock || parent.type === "UIEditor_whenButtonClicked" || parent.type === "UIEditor_whenSliderChanged"|| parent.type === "UIEditor_whenSwitchChanged" || parent.type === 'procedures_definition') {
         return true;
     }else{
         return false
