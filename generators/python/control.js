@@ -34,16 +34,11 @@ Blockly.Python['control_wait'] = function(block) {
         code = "time.sleep(" + arg0/1000 + ")\n";
     }
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         Blockly.Python.definitions_['import time'] = "import time";
         return code;
-    }else{
-        return ''
     }
+    return '';
 };
 
 Blockly.Python['control_repeat'] = function(block) {
@@ -59,15 +54,10 @@ Blockly.Python['control_repeat'] = function(block) {
         code += Blockly.Python.INDENT + "pass\n";
     }
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
     
 };
 
@@ -83,15 +73,10 @@ Blockly.Python['control_forever'] = function(block) {
     code += branch;
     code += Blockly.Python.INDENT + "repeat()\n";
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
 };
 
 Blockly.Python['control_if'] = function(block) {
@@ -111,15 +96,10 @@ Blockly.Python['control_if'] = function(block) {
     }
     console.log('code-----', code)
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
 };
 
 Blockly.Python['control_if_else'] = function(block) {
@@ -143,15 +123,10 @@ Blockly.Python['control_if_else'] = function(block) {
         code += Blockly.Python.INDENT + "pass\n";
     }
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
     
 };
 
@@ -160,15 +135,10 @@ Blockly.Python['control_wait_until'] = function(block) {
         Blockly.Python.ORDER_UNARY_POSTFIX) || 'False';
     var code = "while not (" + argument + "):\n";
     code += Blockly.Python.INDENT + "repeat()\n";
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition'){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
 };
 
 Blockly.Python['control_repeat_until'] = function(block) {
@@ -181,15 +151,10 @@ Blockly.Python['control_repeat_until'] = function(block) {
     var code = "while not (" + argument + "):\n";
     code += branch;
     code += Blockly.Python.INDENT + "repeat()\n";
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
 };
 
 
@@ -208,13 +173,8 @@ Blockly.Python['control_while'] = function(block) {
     code += branch;
     code += Blockly.Python.INDENT + "repeat()\n";
 
-    let parent=block
-    while (parent.getParent()) {
-        parent = parent.getParent();
-    }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' ){
+    if(isCurrentBlockHat(block)){
         return code;
-    }else{
-        return ''
     }
+    return '';
 };

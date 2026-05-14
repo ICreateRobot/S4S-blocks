@@ -39,15 +39,10 @@ Blockly.Python['operator_arithmetic'] = function(block) {
   var code = argument0 + op + argument1;
 
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
+  if(isCurrentBlockHat(block)){
+      return [code, order];
   }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
-    return [code, order];
-  }else{
-      return ''
-  }
+  return '';
   
 };
 
@@ -61,16 +56,12 @@ Blockly.Python['operator_random'] = function(block) {
   var arg1 = Blockly.Python.valueToCode(block, 'TO', Blockly.Python.ORDER_FUNCTION_CALL) || '0';
   var code = "random.randint(" + arg0 + ", " + arg1 + ")";
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     Blockly.Python.definitions_['import random'] = "import random";
     return [code, Blockly.Python.ORDER_FUNCTION_CALL];
-  }else{
-      return ''
   }
+  return '';
+  
   
 };
 
@@ -98,15 +89,11 @@ Blockly.Python['operator_compare'] = function(block) {
   var op = oplist[block.type];
   var code = arg0 + op + arg1;
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, order];
-  }else{
-      return ''
   }
+  return '';
+ 
   
 };
 
@@ -116,15 +103,10 @@ Blockly.Python['operator_notnone'] = function(block) {
   var arg0 = Blockly.Python.valueToCode(block, 'CONTENT', Blockly.Python.ORDER_NONE) || '0';
   var code =`${arg0} is not None`
   console.log(code)
-  let parent=block
-  while (parent.getParent()) {
-    parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_NONE];
-  }else{
-      return ''
   }
+  return '';
 }
 
 Blockly.Python['operator_gt'] = Blockly.Python['operator_compare'];
@@ -142,15 +124,11 @@ Blockly.Python['operator_operation'] = function(block) {
   var arg1 = Blockly.Python.valueToCode(block, 'OPERAND2', order) || '0';
   var op = oplist[block.type];
   var code = arg0 + op + arg1;
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, order];
-  }else{
-      return ''
   }
+  return '';
+ 
   
 };
 
@@ -163,15 +141,10 @@ Blockly.Python['operator_not'] = function(block) {
   var arg0 = Blockly.Python.valueToCode(block, 'OPERAND', order) || 'false';
   var code = 'not ' + arg0;
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, order];
-  }else{
-      return ''
   }
+  return '';
   
 };
 
@@ -181,15 +154,10 @@ Blockly.Python['operator_join'] = function(block) {
   var arg1 = Blockly.Python.valueToCode(block, 'STRING2', order) || '\'\'';
   var code = 'str(' + arg0 + ') + str(' + arg1 + ')';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_ADDITIVE];
-  }else{
-      return ''
   }
+  return '';
   
 };
 
@@ -206,15 +174,10 @@ Blockly.Python['operator_letter_of'] = function(block) {
 
   var code = arg0 + '[' + arg1 + ']';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_MEMBER];
-  }else{
-      return ''
   }
+  return '';
  
 };
 
@@ -222,15 +185,10 @@ Blockly.Python['operator_length'] = function(block) {
   var arg0 = Blockly.Python.valueToCode(block, 'STRING', Blockly.Python.ORDER_FUNCTION_CALL) || '\'\'';
   var code = 'len(' + arg0 + ')';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_FUNCTION_CALL];
-  }else{
-      return ''
   }
+  return '';
   
 };
 
@@ -240,15 +198,11 @@ Blockly.Python['operator_contains'] = function(block) {
   var arg1 = Blockly.Python.valueToCode(block, 'STRING2', order) || '0';
   var code = 'str(' + arg0 + ').find(str(' + arg1 + ')) > -1';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_RELATIONAL];
-  }else{
-      return ''
   }
+  return '';
+ 
   
 };
 
@@ -258,15 +212,11 @@ Blockly.Python['operator_mod'] = function(block) {
   var arg1 = Blockly.Python.valueToCode(block, 'NUM2', order) || '0';
   var code = arg0 + ' % ' + arg1;
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, order];
-  }else{
-      return ''
   }
+  return '';
+ 
   
 };
 
@@ -275,15 +225,11 @@ Blockly.Python['operator_round'] = function(block) {
   var arg0 = Blockly.Python.valueToCode(block, 'NUM', order) || '0';
   var code = 'round(' + arg0 + ')';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     return [code, Blockly.Python.ORDER_FUNCTION_CALL];
-  }else{
-      return ''
   }
+  return '';
+  
   
 };
 
@@ -344,15 +290,11 @@ Blockly.Python['operator_mathop'] = function(block) {
       break;
   }
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-  if(parent.type=='event_when' || parent.type=='procedures_definition'){
+  if(isCurrentBlockHat(block)){
     Blockly.Python.definitions_['import math'] = "import math";
     return [code, order];
-  }else{
-      return ''
   }
+  return '';
+  
   
 };

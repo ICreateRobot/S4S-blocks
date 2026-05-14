@@ -27,15 +27,11 @@ Blockly.Python['data_variable'] = function(block) {
   var varName = Blockly.Python.variableDB_.getName(block.getFieldValue('VARIABLE'),
       Blockly.Variables.NAME_TYPE);
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return [varName, Blockly.Python.ORDER_ATOMIC];
-  }else{
-      return ''
   }
+  return '';
+
   // return [varName, Blockly.Python.ORDER_ATOMIC];
 };
 
@@ -51,15 +47,12 @@ Blockly.Python['data_setvariableto'] = function(block) {
   }
   // return varName + ' = ' + arg0 + '\n';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return varName + ' = ' + arg0 + '\n';
-  }else{
-      return ''
   }
+  return '';
+
+  
 };
 
 Blockly.Python['data_changevariableby'] = function(block) {
@@ -70,15 +63,11 @@ Blockly.Python['data_changevariableby'] = function(block) {
 
   // return varName + ' += ' + arg0 + '\n';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return varName + ' += ' + arg0 + '\n';
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_showvariable'] = function() {
@@ -94,15 +83,12 @@ Blockly.Python['data_listcontents'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   // return [varName, Blockly.Python.ORDER_ATOMIC];
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+
+  if(isCurrentBlockHat(block)){
     return [varName, Blockly.Python.ORDER_ATOMIC];
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_addtolist'] = function(block) {
@@ -112,15 +98,11 @@ Blockly.Python['data_addtolist'] = function(block) {
       Blockly.Variables.NAME_TYPE);
 
   // return varName + '.append(' + item + ')\n';
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return varName + '.append(' + item + ')\n';
-  }else{
-      return ''
   }
+  return '';
+ 
 };
 
 Blockly.Python['data_deleteoflist'] = function(block) {
@@ -130,15 +112,11 @@ Blockly.Python['data_deleteoflist'] = function(block) {
       Blockly.Variables.NAME_TYPE);
 
   // return 'del ' + varName + '[' + index + ' - 1]\n';
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return 'del ' + varName + '[' + index + ' - 1]\n';
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_deletealloflist'] = function(block) {
@@ -147,15 +125,11 @@ Blockly.Python['data_deletealloflist'] = function(block) {
 
   // return 'del ' + varName + '[0:]\n';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return 'del ' + varName + '[0:]\n';
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_insertatlist'] = function(block) {
@@ -168,15 +142,11 @@ Blockly.Python['data_insertatlist'] = function(block) {
 
   // return varName + '.insert(' + index + ' - 1, ' + item + ')\n';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return varName + '.insert(' + index + ' - 1, ' + item + ')\n';
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_replaceitemoflist'] = function(block) {
@@ -189,15 +159,11 @@ Blockly.Python['data_replaceitemoflist'] = function(block) {
 
   // return varName + '[' + index + ' - 1] = ' + item + '\n';
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return varName + '[' + index + ' - 1] = ' + item + '\n';
-  }else{
-      return ''
   }
+  return '';
+ 
 };
 
 Blockly.Python['data_itemoflist'] = function(block) {
@@ -207,15 +173,11 @@ Blockly.Python['data_itemoflist'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   // return [varName + '[' + index + ' - 1]', Blockly.Python.ORDER_ATOMIC];
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return [varName + '[' + index + ' - 1]', Blockly.Python.ORDER_ATOMIC];
-  }else{
-      return ''
   }
+  return '';
+ 
 };
 
 Blockly.Python['data_itemnumoflist'] = function(block) {
@@ -225,15 +187,11 @@ Blockly.Python['data_itemnumoflist'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   // return [varName + '.index(' + item + ') + 1', Blockly.Python.ORDER_UNARY_SIGN];
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return [varName + '.index(' + item + ') + 1', Blockly.Python.ORDER_UNARY_SIGN];
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_lengthoflist'] = function(block) {
@@ -241,15 +199,11 @@ Blockly.Python['data_lengthoflist'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   // return ['len(' + varName + ')', Blockly.Python.ORDER_ATOMIC];
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return ['len(' + varName + ')', Blockly.Python.ORDER_ATOMIC];
-  }else{
-      return ''
   }
+  return '';
+  
 };
 
 Blockly.Python['data_listcontainsitem'] = function(block) {
@@ -259,15 +213,11 @@ Blockly.Python['data_listcontainsitem'] = function(block) {
       Blockly.Variables.NAME_TYPE);
   // return ['' + item + ' in ' + varName, Blockly.Python.ORDER_RELATIONAL];
 
-  let parent=block
-  while (parent.getParent()) {
-      parent = parent.getParent();
-  }
-	if(parent.type=='event_when' || parent.type=='procedures_definition' || parent.type === 'event_whenflagclicked'){
+  if(isCurrentBlockHat(block)){
     return ['' + item + ' in ' + varName, Blockly.Python.ORDER_RELATIONAL];
-  }else{
-      return ''
   }
+  return '';
+ 
 };
 
 Blockly.Python['data_showlist'] = function() {
