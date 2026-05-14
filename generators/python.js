@@ -113,6 +113,7 @@ Blockly.Python.init = function(workspace) {
     Blockly.Python.loops_ = Object.create(null);
 
     Blockly.Python.definitions_ = Object.create(null);
+    Blockly.Python.topFunctions_ = [];//用于存放ui编辑器中的帽子快的最上面的两个函数
 
     if (!Blockly.Python.variableDB_) {
         Blockly.Python.variableDB_ =
@@ -151,6 +152,8 @@ Blockly.Python.finish = function(code) {
     for (var name in Blockly.Python.customFunctions_) {
         customFunctions.push(Blockly.Python.customFunctions_[name]);
     }
+
+    var topFunctions = Blockly.Python.topFunctions_;
     // Convert the libraries dictionary into a list.
     var libraries = [];
     for (var name in Blockly.Python.libraries_) {
@@ -180,6 +183,10 @@ Blockly.Python.finish = function(code) {
     // variables
     if (variables.length !== 0) {
         ret += variables.join('\n') + "\n\n";
+    }
+    // top function definitions
+    if (topFunctions.length !== 0) {
+        ret += topFunctions.join('\n') + "\n";
     }
     // custom function definitions
     if (customFunctions.length !== 0) {
@@ -237,6 +244,7 @@ Blockly.Python.finish = function(code) {
     delete Blockly.Python.customFunctions_;
     delete Blockly.Python.customFunctionsArgName_;
     delete Blockly.Python.definitions_;
+    delete Blockly.Python.topFunctions_;
     Blockly.Python.variableDB_.reset();
     Blockly.Python.firstLoop = true;
 
