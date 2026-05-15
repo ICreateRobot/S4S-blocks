@@ -26,25 +26,25 @@ goog.require('Blockly.Arduino');
 // Blockly.Arduino['arduino_pin_setPinMode'] = function(block) {
 //   var arg0 = block.getFieldValue('PIN') || '0';
 //   var arg1 = block.getFieldValue('MODE') || 'INPUT';
-//   var code = "pinMode(" + arg0 + ", " + arg1 + ");\n";
+//   var code = "pinMode(" + arg0 + ", " + arg1 + ");;\n";
 //   return code;
 // };
 
 // Blockly.Arduino['arduino_pin_setDigitalOutput'] = function(block) {
 //   var arg0 = block.getFieldValue('PIN') || '0';
 //   var arg1 = Blockly.Arduino.valueToCode(block, 'LEVEL', Blockly.Arduino.ORDER_NONE) || 'LOW';
-//   var code = "digitalWrite(" + arg0 + ", " + arg1 + ");\n";
+//   var code = "digitalWrite(" + arg0 + ", " + arg1 + ");;\n";
 //   return code;
 // };
 
 //初始化oled
 Blockly.Arduino['ArduinoS4S_ICA_S4S_oledInit'] = function(block) {
-  var code = "hw_esp_oled.init()\n";
+  var code = "hw_esp_oled.init();\n";
   return code;
 };
 //清空oled
 Blockly.Arduino['ArduinoS4S_ICA_S4S_clearOled'] = function(block) {
-    var code = "hw_esp_oled.clear_screen()\n";
+    var code = "hw_esp_oled.clear_screen();\n";
     return code;
 };
 //设置文字大小
@@ -96,7 +96,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_drawCircle'] = function(block) {
 };
 //刷新显示屏
 Blockly.Arduino['ArduinoS4S_ICA_S4S_refresh'] = function(block) {
-    var code = "hw_esp_oled.refresh()\n";
+    var code = "hw_esp_oled.refresh();\n";
     return code;
 };
 //按钮是否被按下
