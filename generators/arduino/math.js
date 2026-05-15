@@ -49,3 +49,34 @@ Blockly.Arduino['math_int11_number'] = Blockly.Arduino['math_number'];
 Blockly.Arduino['math_0to100_number'] = Blockly.Arduino['math_number'];
 Blockly.Arduino['math_half_angle'] = Blockly.Arduino['math_number'];
 
+Blockly.Arduino['numresD100D100'] = Blockly.Arduino['math_number'];
+
+
+Blockly.Arduino['numres0D4'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D9'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D10'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres40D500'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres20D10000'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D255'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numresD255D255'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D300'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numresD100D100'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres1'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D100'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numresD360D360'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numresD32400D32400'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D65535'] = Blockly.Arduino['math_number'];
+
+Blockly.Arduino['numresD1000D1000'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D180'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D99'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres1D12'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres1D31'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D23'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D59'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D1'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D1023'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres0D1000'] = Blockly.Arduino['math_number'];
+Blockly.Arduino['numres1D60'] = Blockly.Arduino['math_number'];
+

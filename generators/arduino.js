@@ -194,7 +194,7 @@ Blockly.Arduino.finish = function(code) {
     }
 
     // setup()
-    ret += "void setup() {\n";
+    ret += "void app_setup() {\n";
     if (setups.length != 0) {
         ret += Blockly.Arduino.INDENT + setups.join('\n' + Blockly.Arduino.INDENT) + "\n";
     }
@@ -206,11 +206,11 @@ Blockly.Arduino.finish = function(code) {
     // if (Blockly.Arduino.firstLoop) {
     //     ret += "void loop() {\n" + Blockly.Arduino.INDENT + "repeat();\n}\n";
     // }
-    ret += "void loop() {\n";
+    ret += "void app_loop() {\n";
     if (loops.length != 0) {
         ret +=  loops.join('\n' + Blockly.Arduino.INDENT) + "\n";//Blockly.Arduino.INDENT +
     }
-    ret += "}\n";
+    ret += Blockly.Arduino.INDENT+"delay(2);\n}\n";
 
     // // repeat()
     // // if has loops_ code, add the repeat() function to place it.

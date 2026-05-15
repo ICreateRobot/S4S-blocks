@@ -24,15 +24,17 @@ goog.require('Blockly.Arduino');
 
 
 Blockly.Arduino['procedures_definition'] = function(block) {
-  var func = Blockly.Arduino.statementToCode(block, 'custom_block');
 
-  // Delet first indent.
-  func = func.slice(2);
-  var code = func + ' {\n';
-  code = Blockly.Arduino.scrub_(block, code);
-  code += '}\n';
+  //暂不支持此功能，加钱再说
+  // var func = Blockly.Arduino.statementToCode(block, 'custom_block');
 
-  Blockly.Arduino.customFunctions_[func] = code;
+  // // Delet first indent.
+  // func = func.slice(2);
+  // var code = func + ' {\n';
+  // code = Blockly.Arduino.scrub_(block, code);
+  // code += '}\n';
+
+  // Blockly.Arduino.customFunctions_[func] = code;
   return null;
 };
 

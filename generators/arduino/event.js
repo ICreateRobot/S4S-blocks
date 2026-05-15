@@ -31,7 +31,7 @@ Blockly.Arduino['event_whenarduinobegin'] = function() {
 };
 
 Blockly.Arduino['event_when']=function(block){
-  Blockly.Arduino.includes_["arduino"] = "#include <Arduino.h>";
+  Blockly.Arduino.includes_["arduino"] = '#include "TinkerCode.h"';
   return ''
 };
 
