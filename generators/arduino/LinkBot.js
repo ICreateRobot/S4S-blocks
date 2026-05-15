@@ -10,7 +10,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_servo'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
     const pinText = Blockly.Arduino.valueToCode(block, 'TEXT',Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.servo_set_angle(${pinChoice},${pinText})\n`;
+    const ArduinoCode = `hw_main_board.servo_set_angle(${pinChoice},${pinText});\n`;
 
     return ArduinoCode
     
@@ -18,7 +18,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_servo'] = function(block) {
 Blockly.Arduino['LinkBotActuators_ICM_S4S_servoRelease'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
     
-    const ArduinoCode = `hw_main_board.servo_release(${pinChoice})\n`;
+    const ArduinoCode = `hw_main_board.servo_release(${pinChoice});\n`;
 
     return ArduinoCode
     
@@ -28,7 +28,7 @@ Blockly.Arduino['LinkBotActuators_LinkBot_continuous_servo'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
     const pinText = Blockly.Arduino.valueToCode(block, 'TEXT',Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.servo_set_speed(${pinChoice},${pinText})\n`;
+    const ArduinoCode = `hw_main_board.servo_set_speed(${pinChoice},${pinText});\n`;
 
     return ArduinoCode
     
@@ -36,7 +36,7 @@ Blockly.Arduino['LinkBotActuators_LinkBot_continuous_servo'] = function(block) {
 Blockly.Arduino['LinkBotActuators_LinkBot_continuous_servoStop'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
     
-    const ArduinoCode = `hw_main_board.servo_stop(${pinChoice})\n`;
+    const ArduinoCode = `hw_main_board.servo_stop(${pinChoice});\n`;
 
     return ArduinoCode
     
@@ -52,7 +52,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorRunType'] = function(block) {
     
     DIVERSION='MOTORS_'+getAfterDot(DIVERSION)
     TYPE='MOTORS_'+getAfterDot(TYPE)
-    const ArduinoCode = `hw_main_board.motors_run_for(${CHOICE},${DIVERSION},${NUM},${TYPE})\n`;
+    const ArduinoCode = `hw_main_board.motors_run_for(${CHOICE},${DIVERSION},${NUM},${TYPE});\n`;
 
     return ArduinoCode
     
@@ -65,7 +65,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorRunDiv'] = function(block) {
 
     DIVERSION='MOTORS_'+getAfterDot(DIVERSION)
     
-    const ArduinoCode = `hw_main_board.motors_start(${CHOICE},${DIVERSION})\n`;
+    const ArduinoCode = `hw_main_board.motors_start(${CHOICE},${DIVERSION});\n`;
 
     return ArduinoCode
     
@@ -75,7 +75,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorRunDiv'] = function(block) {
 Blockly.Arduino['LinkBotActuators_ICM_S4S_motorStop'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     
-    const ArduinoCode = `hw_main_board.motors_stop(${CHOICE})\n`;
+    const ArduinoCode = `hw_main_board.motors_stop(${CHOICE});\n`;
 
     return ArduinoCode
     
@@ -86,7 +86,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorSetSpeed'] = function(block) {
   const CHOICE = block.getFieldValue('CHOICE');
     const NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.motors_set_speed(${CHOICE},${NUM})\n`;
+    const ArduinoCode = `hw_main_board.motors_set_speed(${CHOICE},${NUM});\n`;
 
     return ArduinoCode
     
@@ -116,7 +116,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorGetSpeed'] = function(block) {
 Blockly.Arduino['LinkBotActuators_ICM_S4S_motorSetPos'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     
-    const ArduinoCode = `hw_main_board.motors_reset_position(${CHOICE})\n`;
+    const ArduinoCode = `hw_main_board.motors_reset_position(${CHOICE});\n`;
 
     return ArduinoCode
     
@@ -126,7 +126,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_motorRunRPM'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     const NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.motors_start_rpm(${CHOICE},${NUM})\n`;
+    const ArduinoCode = `hw_main_board.motors_start_rpm(${CHOICE},${NUM});\n`;
 
     return ArduinoCode
     
@@ -147,7 +147,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_motorRunPower'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     const NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `encoder_motor_set_power(${CHOICE},${NUM})\n`;
+    const ArduinoCode = `encoder_motor_set_power(${CHOICE},${NUM});\n`;
 
     let parent = block;
     while (parent.getParent()) {
@@ -192,7 +192,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovSetPin'] = function(block) {
     const P1 = block.getFieldValue('P1');
     const P2 = block.getFieldValue('P2');
     
-    const ArduinoCode = `hw_main_board.movement_set_motors(${P1},${P2})\n`;
+    const ArduinoCode = `hw_main_board.movement_set_motors(${P1},${P2});\n`;
 
     return ArduinoCode
     
@@ -208,7 +208,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovRun'] = function(block) {
     let TYPE = block.getFieldValue('TYPE');
     TYPE='MOVEMENT_'+getAfterDot(TYPE)
     
-    const ArduinoCode = `hw_main_board.movement_start(${TYPE})\n`;
+    const ArduinoCode = `hw_main_board.movement_start(${TYPE});\n`;
 
     return ArduinoCode
     
@@ -222,7 +222,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovRunSec'] = function(block) {
     TYPE='MOVEMENT_'+getAfterDot(TYPE)
     MODE='MOVEMENT_'+getAfterDot(MODE)
     
-    const ArduinoCode = `hw_main_board.movement_move(${TYPE},${NUM},${MODE})\n`;
+    const ArduinoCode = `hw_main_board.movement_move(${TYPE},${NUM},${MODE});\n`;
 
     return ArduinoCode
     
@@ -230,7 +230,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovRunSec'] = function(block) {
 
 // 双电机停止
 Blockly.Arduino['LinkBot_ICM_S4S_MovStop'] = function(block) {
-    const ArduinoCode = `hw_main_board.movement_stop()\n`;
+    const ArduinoCode = `hw_main_board.movement_stop();\n`;
 
     return ArduinoCode
     
@@ -240,7 +240,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovStop'] = function(block) {
 Blockly.Arduino['LinkBot_ICM_S4S_MovSetPowAll'] = function(block) {
     const NUM =Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.movement_set_speed(${NUM})\n`;
+    const ArduinoCode = `hw_main_board.movement_set_speed(${NUM});\n`;
 
     return ArduinoCode
     
@@ -251,7 +251,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovSetPow'] = function(block) {
     const P1 = Blockly.Arduino.valueToCode(block, 'P1', Blockly.Arduino.ORDER_NONE);
     const P2 = Blockly.Arduino.valueToCode(block, 'P2', Blockly.Arduino.ORDER_NONE);
     
-    const ArduinoCode = `hw_main_board.movement_drive(${P1},${P2})\n`;
+    const ArduinoCode = `hw_main_board.movement_drive(${P1},${P2});\n`;
 
     return ArduinoCode
     
@@ -264,7 +264,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_MovSetPowMode'] = function(block) {
     let MODE = block.getFieldValue('MODE');
     MODE='MOVEMENT_'+getAfterDot(MODE)
     
-    const ArduinoCode = `hw_main_board.movement_drive_for(${P1},${P2},${NUM},${MODE})\n`;
+    const ArduinoCode = `hw_main_board.movement_drive_for(${P1},${P2},${NUM},${MODE});\n`;
 
     return ArduinoCode
     
@@ -277,7 +277,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_ambient'] = function(block) {
     let color= Blockly.Arduino.valueToCode(block, 'COL',Blockly.Arduino.ORDER_NONE) || Blockly.Arduino.statementToCode(block,'COL');
     const [r, g, b] = color.replace('#', '').match(/.{1,2}/g).map(x => parseInt(x, 16));
    
-    const ArduinoCode = `hw_main_board.light_set_color(${r},${g},${b})\n`;
+    const ArduinoCode = `hw_main_board.light_set_color(${r},${g},${b});\n`;
 
     return ArduinoCode
     
@@ -287,7 +287,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_ambient'] = function(block) {
 //氛围灯关闭
 Blockly.Arduino['LinkBot_ICM_S4S_ambientOFF'] = function(block) {
 
-  const ArduinoCode = `mainBoard.ambient_light_set_state(0,(0,0,0))\n`;
+  const ArduinoCode = `mainBoard.ambient_light_set_state(0,(0,0,0));\n`;
 
   let parent = block;
   while (parent.getParent()) {
@@ -438,7 +438,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_ultrSet'] = function(block) {
     let color= Blockly.Arduino.valueToCode(block, 'COL',Blockly.Arduino.ORDER_NONE) || Blockly.Arduino.statementToCode(block,'COL');
     const [r, g, b] = color.replace('#', '').match(/.{1,2}/g).map(x => parseInt(x, 16));
    
-    const ArduinoCode = `hw_cultr.ultrasonic_set_color(${r},${g},${b})\n`;
+    const ArduinoCode = `hw_cultr.ultrasonic_set_color(${r},${g},${b});\n`;
     
     return ArduinoCode
     return '';
@@ -448,7 +448,7 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_ultrSet'] = function(block) {
 //灰度学习
 Blockly.Arduino['LinkBotSensors_ICM_S4S_setMode'] = function(block) {
     let CHOICE = block.getFieldValue('CHOICE');
-    const ArduinoCode = `hw_gray.line_sensor_learn(${CHOICE})\n`;
+    const ArduinoCode = `hw_gray.line_sensor_learn(${CHOICE});\n`;
     CHOICE='LINE_SENSOR_'+getAfterDot(CHOICE)
     return ArduinoCode
     return '';
@@ -456,7 +456,7 @@ Blockly.Arduino['LinkBotSensors_ICM_S4S_setMode'] = function(block) {
 
 //二值学习
 Blockly.Arduino['LinkBot_ICM_S4S_binaryStudy'] = function(block) {
-    const ArduinoCode = `gray.binary_study()\n`;
+    const ArduinoCode = `gray.binary_study();\n`;
     
     let parent = block;
     while (parent.getParent()) {
@@ -473,7 +473,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_colorStudy'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
     //const code = DICT_studyColor[pinChoice];
 
-    const ArduinoCode = `gray.color_study(${pinChoice})\n`;
+    const ArduinoCode = `gray.color_study(${pinChoice});\n`;
     
     let parent = block;
     while (parent.getParent()) {
@@ -487,7 +487,7 @@ Blockly.Arduino['LinkBot_ICM_S4S_colorStudy'] = function(block) {
 
 //清空颜色学习
 Blockly.Arduino['LinkBot_ICM_S4S_colorClear'] = function(block) {
-    const ArduinoCode = `gray.clear_color()\n`;
+    const ArduinoCode = `gray.clear_color();\n`;
     
     let parent = block;
     while (parent.getParent()) {
@@ -547,7 +547,7 @@ Blockly.Arduino['LinkBotSensors_ICM_S4S_rtcSetData'] = function(block) {
     const text2 = Blockly.Arduino.valueToCode(block, 'TEXT1',Blockly.Arduino.ORDER_NONE);
     const text3 = Blockly.Arduino.valueToCode(block, 'TEXT2',Blockly.Arduino.ORDER_NONE);
 
-    const ArduinoCode = `hw_main_board.rtc_set_date(${text1},${text2},${text3})\n`;
+    const ArduinoCode = `hw_main_board.rtc_set_date(${text1},${text2},${text3});\n`;
     
     if(isCurrentBlockHat(block)){
         return ArduinoCode;
@@ -561,7 +561,7 @@ Blockly.Arduino['LinkBotSensors_ICM_S4S_rtcSetTime'] = function(block) {
     const text2 = Blockly.Arduino.valueToCode(block, 'TEXT1',Blockly.Arduino.ORDER_NONE);
     const text3 = Blockly.Arduino.valueToCode(block, 'TEXT2',Blockly.Arduino.ORDER_NONE);
 
-    const ArduinoCode = `hw_main_board.rtc_set_time(${text1},${text2},${text3})\n`;
+    const ArduinoCode = `hw_main_board.rtc_set_time(${text1},${text2},${text3});\n`;
     
     if(isCurrentBlockHat(block)){
         return ArduinoCode;

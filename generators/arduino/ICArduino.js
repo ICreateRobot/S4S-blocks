@@ -50,7 +50,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_clearOled'] = function(block) {
 //设置文字大小
 Blockly.Arduino['ArduinoS4S_ICA_S4S_textSize'] = function(block) {
   var NUM = block.getFieldValue('NUM')
-  var code =`hw_esp_oled.set_text_size(${Number(NUM)})\n`;
+  var code =`hw_esp_oled.set_text_size(${Number(NUM)});\n`;
   return code;
 };
 //设置文字位置
@@ -58,14 +58,14 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_setTextXY'] = function(block) {
     let X = Blockly.Arduino.valueToCode(block, 'X', Blockly.Arduino.ORDER_NONE);
     let Y = Blockly.Arduino.valueToCode(block, 'Y', Blockly.Arduino.ORDER_NONE);
     let TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_oled.print(${Number(X)},${Number(Y)},${TEXT})\n`;
+    var code =`hw_esp_oled.print(${Number(X)},${Number(Y)},${TEXT});\n`;
     return code;
 };
 //绘制像素点
 Blockly.Arduino['ArduinoS4S_ICA_S4S_drawPixel'] = function(block) {
     let X = Blockly.Arduino.valueToCode(block, 'X', Blockly.Arduino.ORDER_NONE);
     let Y = Blockly.Arduino.valueToCode(block, 'Y', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_oled.draw_pixel(${Number(X)},${Number(Y)})\n`;
+    var code =`hw_oled.draw_pixel(${Number(X)},${Number(Y)});\n`;
     return code;
 };
 //绘制线条
@@ -74,7 +74,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_drawLine'] = function(block) {
     let Y1 = Blockly.Arduino.valueToCode(block, 'Y1', Blockly.Arduino.ORDER_NONE);
     let X2 = Blockly.Arduino.valueToCode(block, 'X2', Blockly.Arduino.ORDER_NONE);
     let Y2 = Blockly.Arduino.valueToCode(block, 'Y2', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_oled.draw_line(${Number(X1)},${Number(Y1)},${Number(X2)},${Number(Y2)})\n`;
+    var code =`hw_esp_oled.draw_line(${Number(X1)},${Number(Y1)},${Number(X2)},${Number(Y2)});\n`;
     return code;
 };
 //绘制矩形
@@ -83,7 +83,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_drawrectAngle'] = function(block) {
     let Y = Blockly.Arduino.valueToCode(block, 'Y', Blockly.Arduino.ORDER_NONE);
     let W = Blockly.Arduino.valueToCode(block, 'W', Blockly.Arduino.ORDER_NONE);
     let H = Blockly.Arduino.valueToCode(block, 'H', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_oled.draw_rect(${Number(X)},${Number(Y)},${Number(W)},${Number(H)})\n`;
+    var code =`hw_esp_oled.draw_rect(${Number(X)},${Number(Y)},${Number(W)},${Number(H)});\n`;
     return code;
 };
 //绘制圆形
@@ -91,7 +91,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_drawCircle'] = function(block) {
     let X = Blockly.Arduino.valueToCode(block, 'X', Blockly.Arduino.ORDER_NONE);
     let Y = Blockly.Arduino.valueToCode(block, 'Y', Blockly.Arduino.ORDER_NONE);
     let R = Blockly.Arduino.valueToCode(block, 'R', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_oled.draw_circle(${Number(X)},${Number(Y)},${Number(R)})\n`;
+    var code =`hw_esp_oled.draw_circle(${Number(X)},${Number(Y)},${Number(R)});\n`;
     return code;
 };
 //刷新显示屏
@@ -113,53 +113,53 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_sound'] = function(block) {
 //开始录音
 Blockly.Arduino['ArduinoS4S_ICA_S4S_startRecording'] = function(block) {
     let NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_audio.start_recording(${Number(NUM)})\n`;
+    var code =`hw_esp_audio.start_recording(${Number(NUM)});\n`;
     return code;
 };
 //播放录音
 Blockly.Arduino['ArduinoS4S_ICA_S4S_playRecording'] = function(block) {
-    var code =`hw_esp_audio.play_recording(1)\n`;
+    var code =`hw_esp_audio.play_recording(1);\n`;
     return code;
 };
 //停止播放录音
 Blockly.Arduino['ArduinoS4S_ICA_S4S_stopPlayRecording'] = function(block) {
-    var code =`hw_esp_audio.play_recording(0)\n`;
+    var code =`hw_esp_audio.play_recording(0);\n`;
     return code;
 };
 //获取音频文件
 Blockly.Arduino['ArduinoS4S_ICA_S4S_getAudioFile'] = function(block) {
     let TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_audio.set_audio_file(${TEXT})\n`;
+    var code =`hw_esp_audio.set_audio_file(${TEXT});\n`;
     return code;
 };
 //设置音量大小
 Blockly.Arduino['ArduinoS4S_ICA_S4S_setVolume'] = function(block) {
     let NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_esp_audio.set_volume(${NUM})\n`;
+    var code =`hw_esp_audio.set_volume(${NUM});\n`;
     return code;
 };
 //播放音频
 Blockly.Arduino['ArduinoS4S_ICA_S4S_playAudio'] = function(block) {
-    var code =`hw_esp_audio.play_audio(1)\n`;
+    var code =`hw_esp_audio.play_audio(1);\n`;
     return code;
 };
 //停止播放音频
 Blockly.Arduino['ArduinoS4S_ICA_S4S_stopAudio'] = function(block) {
-    var code =`hw_esp_audio.play_audio(0)\n`;
+    var code =`hw_esp_audio.play_audio(0);\n`;
     return code;
 };
 //设置数字引脚
 Blockly.Arduino['ArduinoS4S_ICA_S4S_setDigital'] = function(block) {
     var PIN = block.getFieldValue('PIN')
     var CHOICE = block.getFieldValue('CHOICE')
-    var code =`hw_pin.digitalWrite("${PIN}",${Number(CHOICE)})\n`;
+    var code =`hw_pin.digitalWrite("${PIN}",${Number(CHOICE)});\n`;
     return code
 };
 //设置pwm引脚
 Blockly.Arduino['ArduinoS4S_ICA_S4S_setPwm'] = function(block) {
     var PIN = block.getFieldValue('PIN')
     let NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE);
-    var code =`hw_pin.analogWrite("${PIN}",${Number(NUM)})\n`;
+    var code =`hw_pin.analogWrite("${PIN}",${Number(NUM)});\n`;
     return code
 };
 //读取数字引脚
@@ -178,7 +178,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_readAnalogPin'] = function(block) {
 Blockly.Arduino['ArduinoS4S_ICA_S4S_setInputPull'] = function(block) {
     var PIN = block.getFieldValue('PIN')
     var CHOICE = block.getFieldValue('CHOICE')
-    var code =`hw_pin.pinMode("${PIN}",${Number(CHOICE)})\n`;
+    var code =`hw_pin.pinMode("${PIN}",${Number(CHOICE)});\n`;
     return code
 };
 //读取脉冲
@@ -198,13 +198,13 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_getTimer'] = function(block) {
 };
 //重置定时器
 Blockly.Arduino['ArduinoS4S_ICA_S4S_resetTimer'] = function(block) {
-    var code =`hw_sys.tick_reset()\n`;
+    var code =`hw_sys.tick_reset();\n`;
     return code
 };
 //串口写入文本
 Blockly.Arduino['ArduinoS4S_ICA_S4S_writeText'] = function(block) {
     let TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE);
-    var code =`if_uart_comm.send_bytes(${TEXT})\n`;
+    var code =`if_uart_comm.send_bytes(${TEXT});\n`;
     return code;
 };
 //读取字节
@@ -231,6 +231,6 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_readUntil'] = function(block) {
 //设置波特率
 Blockly.Arduino['ArduinoS4S_ICA_S4S_setBaud'] = function(block) {
     var CHOICE = block.getFieldValue('CHOICE')
-    var code =`if_uart_comm.config_baud(${Number(CHOICE)})\n`;
+    var code =`if_uart_comm.config_baud(${Number(CHOICE)});\n`;
     return code;
 };

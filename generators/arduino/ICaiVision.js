@@ -24,7 +24,7 @@ goog.require('Blockly.Arduino');
 Blockly.Arduino['ICreateK210_settings'] = function(block) {
   const Text = block.getFieldValue('TWO');
   
-  const ArduinoCode = `vision.set_mode("${Text}")\n`;
+  const ArduinoCode = `vision.set_mode("${Text}");\n`;
 
   return ArduinoCode
   return "";
@@ -54,7 +54,7 @@ Blockly.Arduino['ICreateK210_colorRecogn'] = function(block) {
 Blockly.Arduino['ICreateK210_colorBlockSet'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const ArduinoCode = `vision.set_color("${ONE}")\n`;
+  const ArduinoCode = `vision.set_color("${ONE}");\n`;
   
   return ArduinoCode
   return "";
@@ -215,7 +215,7 @@ Blockly.Arduino['ICreateK210_faceAttrEmote'] = function(block) {
 //#############################################人脸识别模块###########################################
 //人脸学习
 Blockly.Arduino['ICreateK210_faceLearn'] = function(block) {
-  const ArduinoCode = `vision.face_recognized_learn()\n`;
+  const ArduinoCode = `vision.face_recognized_learn();\n`;
   
   return ArduinoCode;
   return "";
@@ -296,7 +296,7 @@ Blockly.Arduino['ICreateK210_wirelessSet'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
   
-  const ArduinoCode = `aiVision.set_wifi_server_ssid_passward(${ONE}, ${TWO})\n`;
+  const ArduinoCode = `aiVision.set_wifi_server_ssid_passward(${ONE}, ${TWO});\n`;
   
   let parent = block;
   while (parent.getParent()) {
@@ -310,7 +310,7 @@ Blockly.Arduino['ICreateK210_wirelessSet'] = function(block) {
 
 //连接无线图传
 Blockly.Arduino['ICreateK210_wirelessConnect'] = function(block) {
-  const ArduinoCode = `aiVision.set_wifi_server_is_scan_qrcode(True)\n`;
+  const ArduinoCode = `aiVision.set_wifi_server_is_scan_qrcode(True);\n`;
   
   let parent = block;
   while (parent.getParent()) {
@@ -329,9 +329,9 @@ Blockly.Arduino['ICreateK210_lightSwitch'] = function(block) {
   
   let ArduinoCode = '';
   if (dropdown_one === '1') {
-      ArduinoCode = `aiVision.set_light_brightness(1)\n`;  // 开灯
+      ArduinoCode = `aiVision.set_light_brightness(1);\n`;  // 开灯
   } else {
-      ArduinoCode = `aiVision.set_light_brightness(0)\n`;  // 关灯
+      ArduinoCode = `aiVision.set_light_brightness(0);\n`;  // 关灯
   }
   
   return ArduinoCode;
@@ -342,7 +342,7 @@ Blockly.Arduino['ICreateK210_lightSwitch'] = function(block) {
 Blockly.Arduino['ICreateK210_lightBrightness'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const ArduinoCode = `vision.set_fill_light_brightness(${Number(ONE)})\n`;
+  const ArduinoCode = `vision.set_fill_light_brightness(${Number(ONE)});\n`;
   
   return ArduinoCode;
   return "";
