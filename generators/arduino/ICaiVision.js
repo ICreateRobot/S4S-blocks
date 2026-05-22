@@ -24,7 +24,7 @@ goog.require('Blockly.Arduino');
 Blockly.Arduino['ICreateK210_settings'] = function(block) {
   const Text = block.getFieldValue('TWO');
   
-  const ArduinoCode = `vision.set_mode("${Text}");\n`;
+  const ArduinoCode = `hw_ai_camera.set_mode(hw_ai_camera.${Text});\n`;
 
   return ArduinoCode
   return "";
@@ -32,7 +32,7 @@ Blockly.Arduino['ICreateK210_settings'] = function(block) {
 
 //获取模式
 Blockly.Arduino['ICreateK210_currentMode'] = function(block) {
-  const ArduinoCode = `vision.get_mode()`;
+  const ArduinoCode = `hw_ai_camera.get_mode()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -43,7 +43,7 @@ Blockly.Arduino['ICreateK210_currentMode'] = function(block) {
 Blockly.Arduino['ICreateK210_colorRecogn'] = function(block) {
   const dropdown_one = block.getFieldValue('ONE');
   
-  const ArduinoCode = `vision.color_value("${dropdown_one}")`;
+  const ArduinoCode = `hw_ai_camera.color_value(hw_ai_camera.${dropdown_one})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -54,7 +54,7 @@ Blockly.Arduino['ICreateK210_colorRecogn'] = function(block) {
 Blockly.Arduino['ICreateK210_colorBlockSet'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const ArduinoCode = `vision.set_color("${ONE}");\n`;
+  const ArduinoCode = `hw_ai_camera.set_color(hw_ai_camera.${ONE});\n`;
   
   return ArduinoCode
   return "";
@@ -62,7 +62,7 @@ Blockly.Arduino['ICreateK210_colorBlockSet'] = function(block) {
 
 //是否追踪到色块
 Blockly.Arduino['ICreateK210_colorIsTrack'] = function(block) {
-  const ArduinoCode = `vision.color_detected()`;
+  const ArduinoCode = `hw_ai_camera.color_detected()==1`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -71,7 +71,7 @@ Blockly.Arduino['ICreateK210_colorIsTrack'] = function(block) {
 //获取色块位置信息
 Blockly.Arduino['ICreateK210_colorBlockInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.color_position("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.color_position(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -80,7 +80,7 @@ Blockly.Arduino['ICreateK210_colorBlockInfo'] = function(block) {
 //#############################################标签识别模块###########################################
 //获取标签数量
 Blockly.Arduino['ICreateK210_tagNum'] = function(block) {
-  const ArduinoCode = `vision.tag_count()`;
+  const ArduinoCode = `hw_ai_camera.tag_count()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -88,7 +88,7 @@ Blockly.Arduino['ICreateK210_tagNum'] = function(block) {
 
 //获取标签内容
 Blockly.Arduino['ICreateK210_tagCont'] = function(block) {
-  const ArduinoCode = `vision.tag_id()`;
+  const ArduinoCode = `hw_ai_camera.tag_id()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -96,7 +96,7 @@ Blockly.Arduino['ICreateK210_tagCont'] = function(block) {
 
 //获取标签旋转角度
 Blockly.Arduino['ICreateK210_tagAngle'] = function(block) {
-  const ArduinoCode = `vision.tag_rotation()`;
+  const ArduinoCode = `hw_ai_camera.tag_rotation()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -105,7 +105,7 @@ Blockly.Arduino['ICreateK210_tagAngle'] = function(block) {
 //获取标签位置信息
 Blockly.Arduino['ICreateK210_tagInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.tag_position("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.tag_position(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -114,7 +114,7 @@ Blockly.Arduino['ICreateK210_tagInfo'] = function(block) {
 //#############################################线条识别模块###########################################
 //是否识别到线条
 Blockly.Arduino['ICreateK210_lineIsRecog'] = function(block) {
-  const ArduinoCode = `vision.line_detected()`;
+  const ArduinoCode = `hw_ai_camera.line_detected()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -124,7 +124,7 @@ Blockly.Arduino['ICreateK210_lineIsRecog'] = function(block) {
 Blockly.Arduino['ICreateK210_lineInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const ArduinoCode = `vision.line_position("${ONE}","${TWO}")`;
+  const ArduinoCode = `hw_ai_camera.line_position(hw_ai_camera.${ONE},hw_ai_camera.${TWO})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -133,7 +133,7 @@ Blockly.Arduino['ICreateK210_lineInfo'] = function(block) {
 //#############################################20类物体识别模块###########################################
 //获取物体数量
 Blockly.Arduino['ICreateK210_objectNum'] = function(block) {
-  const ArduinoCode = `vision.object_count()`;
+  const ArduinoCode = `hw_ai_camera.object_count()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -142,7 +142,7 @@ Blockly.Arduino['ICreateK210_objectNum'] = function(block) {
 //是否识别到指定物体
 Blockly.Arduino['ICreateK210_objectIsRecogn'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.object_detected("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.object_detected(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -151,7 +151,7 @@ Blockly.Arduino['ICreateK210_objectIsRecogn'] = function(block) {
 //获取物体位置信息
 Blockly.Arduino['ICreateK210_objInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.object_position("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.object_position(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -160,7 +160,7 @@ Blockly.Arduino['ICreateK210_objInfo'] = function(block) {
 //#############################################二维码识别模块###########################################
 //是否识别到二维码
 Blockly.Arduino['ICreateK210_qrIsRecogn'] = function(block) {
-  const ArduinoCode = `vision.qr_detected()`;
+  const ArduinoCode = `hw_ai_camera.qr_detected()==1`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -168,7 +168,8 @@ Blockly.Arduino['ICreateK210_qrIsRecogn'] = function(block) {
 
 //获取二维码内容
 Blockly.Arduino['ICreateK210_qrCont'] = function(block) {
-  const ArduinoCode = `vision.qr_data()`;
+  const TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE)|| Blockly.Arduino.statementToCode(block,'TEXT');
+  const ArduinoCode = `hw_ai_camera.qr_data() == ${TEXT}`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -177,7 +178,7 @@ Blockly.Arduino['ICreateK210_qrCont'] = function(block) {
 //获取二维码位置信息
 Blockly.Arduino['ICreateK210_qrInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.qr_position("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.qr_position(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -186,7 +187,7 @@ Blockly.Arduino['ICreateK210_qrInfo'] = function(block) {
 //#############################################人脸属性识别模块###########################################
 //获取人脸属性数量
 Blockly.Arduino['ICreateK210_faceAttrNum'] = function(block) {
-  const ArduinoCode = `vision.face_count()`;
+  const ArduinoCode = `hw_ai_camera.face_count()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -196,7 +197,7 @@ Blockly.Arduino['ICreateK210_faceAttrNum'] = function(block) {
 Blockly.Arduino['ICreateK210_faceAttrInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const ArduinoCode = `vision.face_position("${TWO}",${Number(ONE)})`;
+  const ArduinoCode = `hw_ai_camera.face_position(hw_ai_camera.${TWO},${Number(ONE)})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -206,7 +207,7 @@ Blockly.Arduino['ICreateK210_faceAttrInfo'] = function(block) {
 Blockly.Arduino['ICreateK210_faceAttrEmote'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const ArduinoCode = `vision.face_attribute("${TWO}",${Number(ONE)})`;
+  const ArduinoCode = `hw_ai_camera.face_attribute(hw_ai_camera.${TWO},${Number(ONE)})==1`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -215,7 +216,7 @@ Blockly.Arduino['ICreateK210_faceAttrEmote'] = function(block) {
 //#############################################人脸识别模块###########################################
 //人脸学习
 Blockly.Arduino['ICreateK210_faceLearn'] = function(block) {
-  const ArduinoCode = `vision.face_recognized_learn();\n`;
+  const ArduinoCode = `hw_ai_camera.face_recognized_learn();\n`;
   
   return ArduinoCode;
   return "";
@@ -223,7 +224,7 @@ Blockly.Arduino['ICreateK210_faceLearn'] = function(block) {
 
 //获取人脸识别数量
 Blockly.Arduino['ICreateK210_faceRecogNum'] = function(block) {
-  const ArduinoCode = `vision.face_recognized_count()`;
+  const ArduinoCode = `hw_ai_camera.face_recognized_count()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -231,7 +232,7 @@ Blockly.Arduino['ICreateK210_faceRecogNum'] = function(block) {
 
 //获取已学习人脸数量
 Blockly.Arduino['ICreateK210_faceRecogLearn'] = function(block) {
-  const ArduinoCode = `vision.face_recognized_detected()`;
+  const ArduinoCode = `hw_ai_camera.face_recognized_detected()==1`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -241,7 +242,7 @@ Blockly.Arduino['ICreateK210_faceRecogLearn'] = function(block) {
 Blockly.Arduino['ICreateK210_faceRecognEmote'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   const TWO = block.getFieldValue('TWO');
-  const ArduinoCode = `vision.face_recognized_position("${TWO}","${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.face_recognized_position(hw_ai_camera.${TWO},${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -251,7 +252,7 @@ Blockly.Arduino['ICreateK210_faceRecognEmote'] = function(block) {
 //深度学习识别
 Blockly.Arduino['ICreateK210_deepLearning'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.class_recognized(${Number(ONE)})`;
+  const ArduinoCode = `hw_ai_camera.class_recognized(${Number(ONE)})==1`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -260,7 +261,7 @@ Blockly.Arduino['ICreateK210_deepLearning'] = function(block) {
 //#############################################路标识别模块###########################################
 //获取路标数量
 Blockly.Arduino['ICreateK210_roadNum'] = function(block) {
-  const ArduinoCode = `vision.card_count()`;
+  const ArduinoCode = `hw_ai_camera.card_count()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -271,9 +272,9 @@ Blockly.Arduino['ICreateK210_roadRecog'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   let ArduinoCode
   if(ONE=='RED' || ONE=='GREEN'){
-    ArduinoCode=`vision.card_detected("${ONE}",1)`
+    ArduinoCode=`hw_ai_camera.card_detected(hw_ai_camera.${ONE},1)==1`
   }else{
-    ArduinoCode=`vision.card_detected("${ONE}",2)`
+    ArduinoCode=`hw_ai_camera.card_detected(hw_ai_camera.${ONE},2)==1`
   }
   
   
@@ -284,7 +285,7 @@ Blockly.Arduino['ICreateK210_roadRecog'] = function(block) {
 //获取路标位置信息
 Blockly.Arduino['ICreateK210_roadInfo'] = function(block) {
   const ONE = block.getFieldValue('ONE');
-  const ArduinoCode = `vision.card_position("${ONE}")`;
+  const ArduinoCode = `hw_ai_camera.card_position(hw_ai_camera.${ONE})`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   
@@ -329,9 +330,9 @@ Blockly.Arduino['ICreateK210_lightSwitch'] = function(block) {
   
   let ArduinoCode = '';
   if (dropdown_one === '1') {
-      ArduinoCode = `aiVision.set_light_brightness(1);\n`;  // 开灯
+      ArduinoCode = `hw_ai_camera.set_fill_light_brightness(1);\n`;  // 开灯
   } else {
-      ArduinoCode = `aiVision.set_light_brightness(0);\n`;  // 关灯
+      ArduinoCode = `hw_ai_camera.set_fill_light_brightness(0);\n`;  // 关灯
   }
   
   return ArduinoCode;
@@ -342,7 +343,7 @@ Blockly.Arduino['ICreateK210_lightSwitch'] = function(block) {
 Blockly.Arduino['ICreateK210_lightBrightness'] = function(block) {
   const ONE = block.getFieldValue('ONE');
   
-  const ArduinoCode = `vision.set_fill_light_brightness(${Number(ONE)});\n`;
+  const ArduinoCode = `hw_ai_camera.set_fill_light_brightness(${Number(ONE)});\n`;
   
   return ArduinoCode;
   return "";
@@ -350,7 +351,7 @@ Blockly.Arduino['ICreateK210_lightBrightness'] = function(block) {
 
 //获取灯光亮度
 Blockly.Arduino['ICreateK210_lightGetBrightness'] = function(block) {
-  const ArduinoCode = `vision.get_fill_light_brightness()`;
+  const ArduinoCode = `hw_ai_camera.get_fill_light_brightness()`;
   
   return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
   

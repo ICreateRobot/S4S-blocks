@@ -39,6 +39,10 @@ Blockly.Arduino['data_setvariableto'] = function(block) {
   if (parseFloat(arg0.slice(1, -1)) == arg0.slice(1, -1)) {
     arg0 = parseFloat(arg0.slice(1, -1)).toString();
   }
+
+  // if (arg0.includes('hw_ai_camera.qr_data()')) {
+  //   arg0 += '.toFloat()';
+  // } 
   return varName + ' = ' + arg0 + ';\n';
 };
 
@@ -48,6 +52,9 @@ Blockly.Arduino['data_changevariableby'] = function(block) {
   var varName = Blockly.Arduino.variableDB_.getName(block.getFieldValue('VARIABLE'),
       Blockly.Variables.NAME_TYPE);
 
+  // if (arg0.includes('hw_ai_camera.qr_data()')) {
+  //   arg0 += '.toFloat()';
+  // } 
   return varName + ' += ' + arg0 + ';\n';
 };
 

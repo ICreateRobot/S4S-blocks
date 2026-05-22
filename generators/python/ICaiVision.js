@@ -200,7 +200,8 @@ Blockly.Python['ICreateK210_qrIsRecogn'] = function(block) {
 
 //获取二维码内容
 Blockly.Python['ICreateK210_qrCont'] = function(block) {
-  const pythonCode = `vision.qr_data()`;
+  const TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE)|| Blockly.Arduino.statementToCode(block,'TEXT');
+  const pythonCode = `vision.qr_data() == ${TEXT}`;
   
   if(isCurrentBlockHat(block)){
     return [pythonCode, Blockly.Python.ORDER_NONE];

@@ -1145,7 +1145,7 @@ Blockly.Python['Esp32S4S_setDigital'] = function(block) {
 Blockly.Python['Esp32S4S_setPwm'] = function(block) {
     const PIN = block.getFieldValue('PIN');
     const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE);
-    const pythonCode = `esp_pin.analogWrite(${PIN},${NUM})\n`;
+    const pythonCode = `esp_pin.analogWrite(${PIN},${Number(NUM)})\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode;
@@ -1177,7 +1177,7 @@ Blockly.Python['Esp32S4S_readAnalogPin'] = function(block) {
 Blockly.Python['Esp32S4S_readPulse'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE);
-    const pythonCode = `esp_pin.pulseIn(${CHOICE},1,${NUM})`;
+    const pythonCode = `esp_pin.pulseIn(${CHOICE},1,${Number(NUM)})`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
