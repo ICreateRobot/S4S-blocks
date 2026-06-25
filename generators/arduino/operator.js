@@ -68,22 +68,24 @@ Blockly.Arduino['operator_compare'] = function(block) {
   } else if (arg0 === "\"\"") { // Arg is a empty string
     arg0 = '0';
   } else if (arg0.charAt(0) === '"' && arg0.charAt(arg0.length - 1) === '"') {
-    if (arg0.length === 3) { // Arg is a single character
-      arg0 = arg0.replace(/"/g, '\'');
-    } else { // Arg is a string
-      arg0 = 'String(' + arg0 + ')';
-    }
+    // if (arg0.length === 3) { // Arg is a single character
+    //   arg0 = arg0.replace(/"/g, '\'');
+    // } else { // Arg is a string
+    //   arg0 = 'String(' + arg0 + ')';
+    // }
+    arg0 = 'String(' + arg0 + ')';
   }
   if (parseFloat(arg1.slice(1, -1)) == arg1.slice(1, -1)) {
     arg1 = parseFloat(arg1.slice(1, -1)).toString();
   } else if (arg1 === "\"\"") {
     arg1 = '0';
   } else if (arg1.charAt(0) === '"' && arg1.charAt(arg1.length - 1) === '"') {
-    if (arg1.length === 3) {
-      arg1 = arg1.replace(/"/g, '\'');
-    } else {
-      arg1 = 'String(' + arg1 + ')';
-    }
+    // if (arg1.length === 3) {
+    //   arg1 = arg1.replace(/"/g, '\'');
+    // } else {
+    //   arg1 = 'String(' + arg1 + ')';
+    // }
+    arg1 = 'String(' + arg1 + ')';
   }
 
   var op = oplist[block.type];
