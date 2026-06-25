@@ -202,7 +202,7 @@ function isCurrentBlockHat(currentBlock){
     while (parent.getParent()) {
         parent = parent.getParent();
     }
-    if (parent.type === hatBlock || parent.type === "UIEditor_whenButtonClicked" || parent.type === "UIEditor_whenSliderChanged"|| parent.type === "UIEditor_whenSwitchChanged" || parent.type === 'procedures_definition') {
+    if (parent.type === hatBlock || parent.type === "UIEditor_whenButtonClicked"|| parent.type === "UIIoT_textCallback"|| parent.type === "UIIoT_labelCallback" || parent.type === "UIEditor_whenSliderChanged"|| parent.type === "UIEditor_whenSwitchChanged" || parent.type === 'procedures_definition'|| parent.type === 'UIIoT_imageCallback'|| parent.type === 'UIIoT_buttonCallback'|| parent.type === 'UIIoT_switchCallback'|| parent.type === 'UIIoT_sliderCallback'|| parent.type === 'UIIoT_gaugeCallback'|| parent.type === 'UIIoT_joystickCallback') {
         return true;
     }else{
         return false
