@@ -359,8 +359,8 @@ Blockly.Python['UIIoT_joystickCallback'] = function(block) {
 
         currentBlock = currentBlock.getNextBlock();
     }
-    console.log('wwwww',code)
-    console.log('eeeeee',code.length)
+    // console.log('wwwww',code)
+    // console.log('eeeeee',code.length)
 
     // code = Blockly.Python.prefixLines(
     //     code,
