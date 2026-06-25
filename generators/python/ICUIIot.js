@@ -33,7 +33,7 @@ Blockly.Python['UIIoT_labelCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def label_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}`;
+    const pythonCode = `def label_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`label_${ITEM}_callback`] = pythonCode;
 };
@@ -57,7 +57,7 @@ Blockly.Python['UIIoT_imageCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def image_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}`;
+    const pythonCode = `def image_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`image_${ITEM}_callback`] = pythonCode;
 };
@@ -100,7 +100,7 @@ Blockly.Python['UIIoT_textCallback'] = function(block) {
     let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    ):Blockly.Python.INDENT+'pass'
+    ):Blockly.Python.INDENT+'pass'+'\n'
 
 
     let childVariables=[]
@@ -163,7 +163,7 @@ Blockly.Python['UIIoT_buttonCallback'] = function(block) {
     let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    ):Blockly.Python.INDENT+'pass'
+    ):Blockly.Python.INDENT+'pass'+'\n'
     let childVariables=[]
     for (let name in Blockly.Python.variables_) {
         let varDef = Blockly.Python.variables_[name];
@@ -222,7 +222,7 @@ Blockly.Python['UIIoT_switchCallback'] = function(block) {
     let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    ):Blockly.Python.INDENT+'pass'
+    ):Blockly.Python.INDENT+'pass'+'\n'
     let childVariables=[]
     for (let name in Blockly.Python.variables_) {
         let varDef = Blockly.Python.variables_[name];
@@ -283,7 +283,7 @@ Blockly.Python['UIIoT_sliderCallback'] = function(block) {
     let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    ):Blockly.Python.INDENT+'pass'
+    ):Blockly.Python.INDENT+'pass'+'\n'
     let childVariables=[]
     for (let name in Blockly.Python.variables_) {
         let varDef = Blockly.Python.variables_[name];
@@ -326,7 +326,7 @@ Blockly.Python['UIIoT_gaugeCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def gauge_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}`;
+    const pythonCode = `def gauge_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`gauge_${ITEM}_callback`] = pythonCode;
 };
@@ -369,7 +369,7 @@ Blockly.Python['UIIoT_joystickCallback'] = function(block) {
     let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    ):Blockly.Python.INDENT+'pass'
+    ):Blockly.Python.INDENT+'pass'+'\n'
     let childVariables=[]
 
     for (let name in Blockly.Python.variables_) {
