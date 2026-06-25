@@ -72,6 +72,7 @@ Blockly.Python['control_forever'] = function(block) {
     var code = `while True:\n`;
     code += branch;
     code += Blockly.Python.INDENT + "repeat()\n";
+    code += Blockly.Python.INDENT + "time.sleep(0.01)\n"
 
     if(isCurrentBlockHat(block)){
         return code;
