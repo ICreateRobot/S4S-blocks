@@ -33,7 +33,7 @@ Blockly.Python['UIIoT_labelCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def label_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
+    const pythonCode = `def label_${ITEM}_callback():\n${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`label_${ITEM}_callback`] = pythonCode;
 };
@@ -57,7 +57,7 @@ Blockly.Python['UIIoT_imageCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def image_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
+    const pythonCode = `def image_${ITEM}_callback():\n${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`image_${ITEM}_callback`] = pythonCode;
 };
@@ -120,7 +120,7 @@ Blockly.Python['UIIoT_textCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def text_${ITEM}_callback(iot_text_value):\n${globalLine}${childCode}`;
+    const pythonCode = `def text_${ITEM}_callback(iot_text_value):\n${childCode.includes('pass')?'':globalLine}${childCode}`;
 
     Blockly.Python.customFunctions_[`text_${ITEM}_callback`] = pythonCode;
 };
@@ -179,7 +179,7 @@ Blockly.Python['UIIoT_buttonCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def button_${ITEM}_callback():\n${globalLine}${childCode}`;
+    const pythonCode = `def button_${ITEM}_callback():\n${childCode.includes('pass')?'':globalLine}${childCode}`;
 
     Blockly.Python.customFunctions_[`button_${ITEM}_callback`] = pythonCode;
 };
@@ -240,7 +240,7 @@ Blockly.Python['UIIoT_switchCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def switch_${ITEM}_callback(iot_switch_value):\n${globalLine}${childCode}`;
+    const pythonCode = `def switch_${ITEM}_callback(iot_switch_value):\n${childCode.includes('pass')?'':globalLine}${childCode}`;
 
     Blockly.Python.customFunctions_[`switch_${ITEM}_callback`] = pythonCode;
 };
@@ -301,7 +301,7 @@ Blockly.Python['UIIoT_sliderCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def slider_${ITEM}_callback(iot_slider_value):\n${globalLine}${childCode}`;
+    const pythonCode = `def slider_${ITEM}_callback(iot_slider_value):\n${childCode.includes('pass')?'':globalLine}${childCode}`;
 
     Blockly.Python.customFunctions_[`slider_${ITEM}_callback`] = pythonCode;
 };
@@ -326,7 +326,7 @@ Blockly.Python['UIIoT_gaugeCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def gauge_${ITEM}_callback():\n${globalLine}${Blockly.Python.INDENT}return ${DATA}\n`;
+    const pythonCode = `def gauge_${ITEM}_callback():\n${Blockly.Python.INDENT}return ${DATA}\n`;
 
     Blockly.Python.customFunctions_[`gauge_${ITEM}_callback`] = pythonCode;
 };
@@ -388,7 +388,7 @@ Blockly.Python['UIIoT_joystickCallback'] = function(block) {
         globalLine = Blockly.Python.INDENT +
             'global ' + childVariables.join(', ') + '\n';
     }
-    const pythonCode = `def joystick_${ITEM}_callback(iot_joystick_Xvalue,iot_joystick_Yvalue):\n${globalLine}${childCode}`;
+    const pythonCode = `def joystick_${ITEM}_callback(iot_joystick_Xvalue,iot_joystick_Yvalue):\n${childCode.includes('pass')?'':globalLine}${childCode}`;
 
     Blockly.Python.customFunctions_[`joystick_${ITEM}_callback`] = pythonCode;
 };

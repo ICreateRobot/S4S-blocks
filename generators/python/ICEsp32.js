@@ -545,6 +545,22 @@ Blockly.Python['UIEditor_whenButtonClicked'] = function(block) {
 
     // var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     // console.log(nextBlock)
+    let childVariables=[]
+
+    for (let name in Blockly.Python.variables_) {
+        let varDef = Blockly.Python.variables_[name];
+    
+        // 去掉 " = 0"，只保留变量名
+        let varName = varDef.split('=')[0].trim();
+    
+        childVariables.push(varName);
+    }
+
+    let globalLine = '';
+    if (childVariables.length > 0) {
+        globalLine = Blockly.Python.INDENT +
+            'global ' + childVariables.join(', ') + '\n';
+    }
 
     hiddeBlock.clear()
     let code = '';
@@ -571,13 +587,11 @@ Blockly.Python['UIEditor_whenButtonClicked'] = function(block) {
         currentBlock = currentBlock.getNextBlock();
     }
     console.log('wwwww',code)
-    code = Blockly.Python.prefixLines(
+    let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    );
-    const pythonCode1 = `def ${BUTTON}_clicked_event(event_struct):
-    print("clicked")
-${code || Blockly.Python.INDENT + '\n'}`
+    ):Blockly.Python.INDENT+'pass'+'\n'
+    const pythonCode1 = `def ${BUTTON}_clicked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
     const pythonCode2=`def ${BUTTON}_event_handler(event_struct):
     event = event_struct.get_code()
     if event == ${BUTTON}.clicked:
@@ -717,6 +731,23 @@ Blockly.Python['UIEditor_whenSwitchChanged'] = function(block) {
     const SWITCH = block.getFieldValue('SWITCH');
     const STATE = block.getFieldValue('STATE');
 
+
+    let childVariables=[]
+
+    for (let name in Blockly.Python.variables_) {
+        let varDef = Blockly.Python.variables_[name];
+    
+        // 去掉 " = 0"，只保留变量名
+        let varName = varDef.split('=')[0].trim();
+    
+        childVariables.push(varName);
+    }
+
+    let globalLine = '';
+    if (childVariables.length > 0) {
+        globalLine = Blockly.Python.INDENT +
+            'global ' + childVariables.join(', ') + '\n';
+    }
     const isChecked = STATE === 'True';
     hiddeBlock.clear()
     let code = '';
@@ -743,18 +774,14 @@ Blockly.Python['UIEditor_whenSwitchChanged'] = function(block) {
         currentBlock = currentBlock.getNextBlock();
     }
     console.log('wwwww',code)
-    code = Blockly.Python.prefixLines(
+    let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    );
+    ):Blockly.Python.INDENT+'pass'+'\n'
     console.log('开关状态')
     console.log(STATE)
-    const pythonCode1 = `def ${SWITCH}_checked_event(event_struct):
-    print("开关打开")
-${isChecked? (code || Blockly.Python.INDENT + '\n'):''}`
-    const pythonCode2 = `def ${SWITCH}_unchecked_event(event_struct):
-    print("开关关闭")
-${!isChecked? (code || Blockly.Python.INDENT + '\n'):''}`
+    const pythonCode1 = `def ${SWITCH}_checked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${isChecked? childCode:''}`
+    const pythonCode2 = `def ${SWITCH}_unchecked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${!isChecked? childCode:''}`
     const pythonCode3 = `def ${SWITCH}_event_handler(event_struct):
     event = event_struct.get_code()
     obj = event_struct.get_target_obj()
@@ -901,6 +928,22 @@ Blockly.Python['UIEditor_setSliderValue'] = function(block) {
 Blockly.Python['UIEditor_whenSliderChanged'] = function(block) {
     const SLIDER = block.getFieldValue('SLIDER');
 
+    let childVariables=[]
+
+    for (let name in Blockly.Python.variables_) {
+        let varDef = Blockly.Python.variables_[name];
+    
+        // 去掉 " = 0"，只保留变量名
+        let varName = varDef.split('=')[0].trim();
+    
+        childVariables.push(varName);
+    }
+
+    let globalLine = '';
+    if (childVariables.length > 0) {
+        globalLine = Blockly.Python.INDENT +
+            'global ' + childVariables.join(', ') + '\n';
+    }
     hiddeBlock.clear()
     let code = '';
 
@@ -926,13 +969,11 @@ Blockly.Python['UIEditor_whenSliderChanged'] = function(block) {
         currentBlock = currentBlock.getNextBlock();
     }
     console.log('wwwww',code)
-    code = Blockly.Python.prefixLines(
+    let childCode = code ?  Blockly.Python.prefixLines(
         code,
         Blockly.Python.INDENT
-    );
-    const pythonCode1 = `def ${SLIDER}_value_changed_event(event_struct):
-    print("${SLIDER} value changed, current value:", ${SLIDER}.get_value())
-${code || Blockly.Python.INDENT + '\n'}`
+    ):Blockly.Python.INDENT+'pass'+'\n'
+    const pythonCode1 = `def ${SLIDER}_value_changed_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
 
     const pythonCode2=`def ${SLIDER}_event_handler(event_struct):
     event = event_struct.get_code()
