@@ -7,7 +7,7 @@ Blockly.Python['UIIoT_showQRCode'] = function(block) {
     const x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_NONE);
     const y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_NONE);
     const size = Blockly.Python.valueToCode(block, 'SIZE', Blockly.Python.ORDER_NONE);
-    const pythonCode = `QRCode(data="http://192.168.20.161:3000/preview/2D3PAZ4SU2PMNCMK",x=${x},y=${y},size=${size})\n`;
+    const pythonCode = `QRCode(data="http://139.129.32.56:3000/preview/2D3PAZ4SU2PMNCMK",x=${x},y=${y},size=${size})\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode

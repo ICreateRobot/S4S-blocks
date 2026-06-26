@@ -1238,7 +1238,7 @@ Blockly.Python['Esp32S4S_getTimer'] = function(block) {
 
 //重置时间
 Blockly.Python['Esp32S4S_resetTimer'] = function(block) {
-    const pythonCode = `tick_reset()\n`;
+    const pythonCode = `system.tick_reset()\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode;
