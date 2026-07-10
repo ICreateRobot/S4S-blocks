@@ -1297,3 +1297,181 @@ Blockly.Python['Esp32S4S_readUntil'] = function(block) {
     }
     return '';
 };
+
+/**
+ * ESP32-More
+ */
+Blockly.Python['Esp32S4SMore_setWifi'] = function(block) {
+    const ssid = Blockly.Python.valueToCode(block, 'ssid', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'ssid');
+    const pass = Blockly.Python.valueToCode(block, 'pass', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'pass');
+    const pythonCode = `wlan_sta.connect(${ssid}, ${pass})\n`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['network'] = "import network";
+        Blockly.Python.imports_['init_wifi'] = "wlan_sta = network.WLAN(network.STA_IF)\nwlan_sta.active(True)";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_wifiIsConnected'] = function(block) {
+    const pythonCode = `wlan_sta.isconnected()`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['network'] = "import network";
+        Blockly.Python.imports_['init_wifi'] = "wlan_sta = network.WLAN(network.STA_IF)\nwlan_sta.active(True)";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_wifiDisconnect'] = function(block) {
+    const pythonCode = `wlan_sta.disconnect()\n`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['network'] = "import network";
+        Blockly.Python.imports_['init_wifi'] = "wlan_sta = network.WLAN(network.STA_IF)\nwlan_sta.active(True)";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_configBle'] = function(block) {
+    const NAME = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NAME');
+    const pythonCode = `ble = s4sble.Device(${NAME})\n`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['s4sble'] = "import s4sble";
+        // Blockly.Python.imports_['init_ble'] = "wlan_sta = network.WLAN(network.STA_IF)";
+        Blockly.Python.variables_['client_handle'] = "client_handle=None"
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_startBle'] = function(block) {
+    const SERVICE = Blockly.Python.valueToCode(block, 'SERVICE', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'SERVICE');
+    const READ = Blockly.Python.valueToCode(block, 'READ', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'READ');
+    const WRITE = Blockly.Python.valueToCode(block, 'WRITE', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'WRITE');
+    const pythonCode = `ble.server.add_service(${SERVICE}, [ble.server.create_characteristic(${READ}, True, False, True),ble.server.create_characteristic(${WRITE}, False, True, False)])\nble.server.start(500000)\nble.server.on_connected(ble_server_on_connected_event)\n`;
+
+    const pythonCode2=`def ble_server_on_connected_event(args):
+    _server, _connected_client_handle = args
+    global client_handle
+    client_handle = _connected_client_handle`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.customFunctions_[`ble_connected_event`] = pythonCode2;
+        Blockly.Python.definitions_['s4sble'] = "import s4sble";
+        // Blockly.Python.imports_['init_ble'] = "wlan_sta = network.WLAN(network.STA_IF)";
+        Blockly.Python.variables_['client_handle'] = "client_handle=None"
+        return pythonCode;
+    }
+    return '';
+};
+Blockly.Python['Esp32S4SMore_stopBle'] = function(block) {
+    const pythonCode = `ble.server.clear_services()\nif client_handle:\n${Blockly.Python.INDENT}client_handle.close()\n`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['s4sble'] = "import s4sble";
+        // Blockly.Python.imports_['init_ble'] = "wlan_sta = network.WLAN(network.STA_IF)";
+        Blockly.Python.variables_['client_handle'] = "client_handle=None"
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readByteBle'] = function(block) {
+    const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM');
+    const CHARA = Blockly.Python.valueToCode(block, 'CHARA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'CHARA');
+    // const pythonCode = `client_handle.read(${CHARA}, ${NUM})`;
+    const pythonCode =
+`(client_handle.read(${CHARA}, ${NUM}) if client_handle is not None and client_handle.any(${CHARA}) else '')`
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['s4sble'] = "import s4sble";
+        // Blockly.Python.imports_['init_ble'] = "wlan_sta = network.WLAN(network.STA_IF)";
+        Blockly.Python.variables_['client_handle'] = "client_handle=None"
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_sendBle'] = function(block) {
+    const DATA = Blockly.Python.valueToCode(block, 'DATA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'DATA');
+    const CHARA = Blockly.Python.valueToCode(block, 'CHARA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'CHARA');
+    const pythonCode =
+`if client_handle:
+    client_handle.write(${DATA}, ${CHARA})
+`;
+
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['s4sble'] = "import s4sble";
+        // Blockly.Python.imports_['init_ble'] = "wlan_sta = network.WLAN(network.STA_IF)";
+        Blockly.Python.variables_['client_handle'] = "client_handle=None"
+        return pythonCode;
+    }
+    return '';
+};
+
+
+// Blockly.Python['Esp32S4SMore_setURLHTTP'] = function(block) {
+//     const URL = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'URL');
+
+//     if(isCurrentBlockHat(block)){
+//         Blockly.Python.definitions_['requests2'] = "import requests2";
+//         Blockly.Python.variables_['http_url'] = `http_url=${URL}`
+//         return pythonCode;
+//     }
+//     return '';
+// };
+
+Blockly.Python['Esp32S4SMore_setHeaderHTTP'] = function(block) {
+    const HEADER = Blockly.Python.valueToCode(block, 'HEADER', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'HEADER');
+    const VALUE = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VALUE');
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['requests2'] = "import requests2";
+        Blockly.Python.variables_['http_header'] = `http_header={${HEADER}:${VALUE}}`
+        return '';
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_sendGetHTTP'] = function(block) {
+    const TEXT = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'TEXT');
+    const pythonCode = `http_req = requests2.get(${TEXT}, headers=http_header)\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['requests2'] = "import requests2";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_sendPostHTTP'] = function(block) {
+    const TEXT1 = Blockly.Python.valueToCode(block, 'TEXT1', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'TEXT1');
+    const KEY = Blockly.Python.valueToCode(block, 'KEY', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'KEY');
+    const VALUE = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VALUE');
+    const pythonCode = `http_req = requests2.post(${TEXT1}, json={${KEY}:${VALUE}}, headers=http_header)\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['requests2'] = "import requests2";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_getHTTPCode'] = function(block) {
+    const pythonCode = `http_req.status_code`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['requests2'] = "import requests2";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_getHTTPBody'] = function(block) {
+    const pythonCode = `http_req.text`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['requests2'] = "import requests2";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};

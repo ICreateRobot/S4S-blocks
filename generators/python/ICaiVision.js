@@ -388,9 +388,9 @@ Blockly.Python['ICreateK210_lightSwitch'] = function(block) {
   
   let pythonCode = '';
   if (dropdown_one === '1') {
-      pythonCode = `aiVision.set_light_brightness(1)\n`;  // 开灯
+      pythonCode = `vision.set_fill_light_brightness(1)\n`;  // 开灯
   } else {
-      pythonCode = `aiVision.set_light_brightness(0)\n`;  // 关灯
+      pythonCode = `vision.set_fill_light_brightness(0)\n`;  // 关灯
   }
   
   if(isCurrentBlockHat(block)){

@@ -29,6 +29,28 @@ goog.require('Blockly.constants');
 goog.require('Blockly.ScratchBlocks.VerticalExtensions');
 
 
+// blocks/data_variable_menu.js
+Blockly.Blocks['data_variable_menu'] = {
+  init: function () {
+      this.jsonInit({
+          "message0": "%1",
+          "args0": [
+              {
+                  "type": "field_variable",
+                  "name": "VARIABLE",
+                  "variableType": ""
+              }
+          ],
+          "colour": Blockly.Colours.data.secondary,
+          "colourSecondary": Blockly.Colours.data.secondary,
+          "colourTertiary": Blockly.Colours.data.tertiary,
+          "colourQuaternary": Blockly.Colours.data.quaternary,
+          "extensions": [
+              "output_string"
+          ]
+      });
+  }
+};
 Blockly.Blocks['data_variable'] = {
   /**
    * Block of Variables

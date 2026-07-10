@@ -479,6 +479,43 @@ Blockly.Python['LinkBotActuators_ICM_S4S_ultrSet'] = function(block) {
     return '';
 };
 
+//超声波
+Blockly.Python['Ultrasonic_ICM_S4S_ultrGet'] = function(block) {
+    const TYPE = block.getFieldValue('TYPE');
+    const pythonCode = `ultrasonic.get_distance(${TYPE})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+// 超声波判断
+Blockly.Python['Ultrasonic_ICM_S4S_ultrGetLog'] = function(block) {
+    const TYPE = block.getFieldValue('TYPE');
+    const CHOICE = block.getFieldValue('CHOICE');
+    const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE);
+    
+    const pythonCode = `ultrasonic.get_distance(${TYPE}) ${CHOICE} ${NUM}`;
+
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return "";
+};
+//超声波灯
+Blockly.Python['Ultrasonic_ICM_S4S_ultrSet'] = function(block) {
+    let color= Blockly.Python.valueToCode(block, 'COL',Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'COL');
+    const [r, g, b] = color.replace('#', '').match(/.{1,2}/g).map(x => parseInt(x, 16));
+   
+    const pythonCode = `ultrasonic.set_color(${r},${g},${b})\n`;
+    
+    if(isCurrentBlockHat(block)){
+        return pythonCode
+    }
+    return '';
+};
+
 //#############################################巡线###########################################
 //灰度学习
 Blockly.Python['LinkBotSensors_ICM_S4S_setMode'] = function(block) {
@@ -564,6 +601,101 @@ Blockly.Python['LinkBotSensors_ICM_S4S_colorGet'] = function(block) {
 
 //巡线获取黑线
 Blockly.Python['LinkBotSensors_ICM_S4S_blackGet'] = function(block) {
+    const pinChoice = block.getFieldValue('CHOICE');
+
+    const pythonCode = `line_sensor.detect_line(${pinChoice})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+
+//灰度学习
+Blockly.Python['LineFollow_ICM_S4S_setMode'] = function(block) {
+    const CHOICE = block.getFieldValue('CHOICE');
+    const pythonCode = `line_sensor.learn(${CHOICE})\n`;
+    
+    if(isCurrentBlockHat(block)){
+        return pythonCode
+    }
+    return '';
+};
+
+//二值学习
+Blockly.Python['LineFollow_ICM_S4S_binaryStudy'] = function(block) {
+    const pythonCode = `gray.binary_study()\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return pythonCode;
+    }
+    return '';
+};
+
+//颜色学习
+Blockly.Python['LineFollow_ICM_S4S_colorStudy'] = function(block) {
+    const pinChoice = block.getFieldValue('CHOICE');
+    //const code = DICT_studyColor[pinChoice];
+
+    const pythonCode = `gray.color_study(${pinChoice})\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return pythonCode;
+    }
+    return '';
+};
+
+//清空颜色学习
+Blockly.Python['LineFollow_ICM_S4S_colorClear'] = function(block) {
+    const pythonCode = `gray.clear_color()\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return pythonCode;
+    }
+    return '';
+};
+
+//巡线获取灰度值
+Blockly.Python['LineFollow_ICM_S4S_grayGet'] = function(block) {
+    const pinChoice = block.getFieldValue('CHOICE');
+
+    const pythonCode = `line_sensor.gray(${pinChoice})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+//巡线获取颜色
+Blockly.Python['LineFollow_ICM_S4S_colorGet'] = function(block) {
+    const pinChoice = block.getFieldValue('CHOICE');
+    const pinChoice1 = block.getFieldValue('CHOICE1');
+    //const code = DICT_studyColor[pinChoice1];
+
+    const pythonCode = `line_sensor.color(${pinChoice},${pinChoice1})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+//巡线获取黑线
+Blockly.Python['LineFollow_ICM_S4S_blackGet'] = function(block) {
     const pinChoice = block.getFieldValue('CHOICE');
 
     const pythonCode = `line_sensor.detect_line(${pinChoice})`;
