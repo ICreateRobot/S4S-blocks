@@ -204,7 +204,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_resetTimer'] = function(block) {
 //串口写入文本
 Blockly.Arduino['ArduinoS4S_ICA_S4S_writeText'] = function(block) {
     let TEXT = Blockly.Arduino.valueToCode(block, 'TEXT', Blockly.Arduino.ORDER_NONE)|| Blockly.Arduino.statementToCode(block,'TEXT');
-    var code =`if_uart_comm.send_bytes(${TEXT});\n`;
+    var code =`if_uart_comm.print(${TEXT},'\\n');\n`;
     return code;
 };
 //读取字节
