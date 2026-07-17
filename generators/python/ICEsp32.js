@@ -1290,7 +1290,7 @@ Blockly.Python['Esp32S4S_readString'] = function(block) {
 //读取数据直到满足条件
 Blockly.Python['Esp32S4S_readUntil'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
-    const pythonCode = `uart.readline(${CHOICE})`;
+    const pythonCode = `uart.readline('${CHOICE}')`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
@@ -1472,6 +1472,347 @@ Blockly.Python['Esp32S4SMore_getHTTPBody'] = function(block) {
     if(isCurrentBlockHat(block)){
         Blockly.Python.definitions_['requests2'] = "import requests2";
         return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_startEspnow'] = function(block) {
+    const NUM = block.getFieldValue('NUM');
+    const pythonCode = `espnow_0 = S4SESPNow(${NUM})\nespnow_0.set_irq_callback(espnow_recv_callback)\n`
+    const pythonCode2 = `def espnow_recv_callback(espnow_obj):
+    global espnow_data, espnow_mac
+    espnow_mac, espnow_data = espnow_obj.recv_data()`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.customFunctions_['ESPNOW_RECV'] = pythonCode2
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        Blockly.Python.variables_['espnow_mac'] = 'espnow_mac=None'
+        Blockly.Python.variables_['espnow_data'] = 'espnow_data=None'
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_setEspnowConfig'] = function(block) {
+    const MAC = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'MAC');
+    const PEER = Blockly.Python.valueToCode(block, 'PEER', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'PEER');
+    const IFIDX = block.getFieldValue('IFIDX');
+    const ENCRYPT = block.getFieldValue('ENCRYPT');
+    const LMK = Blockly.Python.valueToCode(block, 'LMK', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'LMK');
+    const real = LMK.trim().replace(/^["']|["']$/g, '')
+    const pythonCode = `espnow_0.set_add_peer(${MAC}, ${PEER}, ${IFIDX}, ${ENCRYPT}${(ENCRYPT=='True' && real !='only valid when encrypt=True') ? ','+LMK:''})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_stopEspnow'] = function(block) {
+    const pythonCode = `espnow_0.deinit()\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_setEspnow'] = function(block) {
+    const NAME = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NAME');
+    const pythonCode = `espnow_0.set_ap_ssid(${NAME})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_setEspnowKey'] = function(block) {
+    const KEY = Blockly.Python.valueToCode(block, 'KEY', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'KEY');
+    const pythonCode = `espnow_0.set_pmk_encrypt(${KEY})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+function parseIfPureNumber(str) {
+    if (typeof str === 'string' && /^\d+$/.test(str)) {
+      return Number(str);
+    }
+    return str;
+  }
+Blockly.Python['Esp32S4SMore_espnowSendData'] = function(block) {
+    const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM');
+    const DATA = Blockly.Python.valueToCode(block, 'DATA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'DATA');
+    let data = parseIfPureNumber(DATA)
+    const pythonCode = `espnow_0.send_data(${NUM}, ${data})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_espnowSendDataAll'] = function(block) {
+    const DATA = Blockly.Python.valueToCode(block, 'DATA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'DATA');
+    let data = parseIfPureNumber(DATA)
+    const pythonCode = `espnow_0.broadcast_data(${data})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_espnowGetDeviceInfo'] = function(block) {
+    const INFO = block.getFieldValue('INFO');
+    const SSID = Blockly.Python.valueToCode(block, 'SSID', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'SSID');
+
+    const pythonCode = `espnow_0.get_remote_mac(${INFO}, ${SSID})`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_espnowGetMess'] = function(block) {
+
+    const pythonCode = `espnow_data`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_espnowRecFromAddr'] = function(block) {
+
+    const pythonCode = `espnow_mac`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['S4SESPNow'] = "from s4sespnow import S4SESPNow";
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_startUartTxRx'] = function(block) {
+    const NUM = block.getFieldValue('NUM');
+    const BAUD = Blockly.Python.valueToCode(block, 'BAUD', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'BAUD');
+    const TX = Blockly.Python.valueToCode(block, 'TX', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'TX');
+    const RX = Blockly.Python.valueToCode(block, 'RX', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'RX');
+
+    const pythonCode = `uart${NUM} = UART(${NUM}, baudrate=${BAUD}, bits=8, parity=None, stop=1, tx=${TX}, rx=${RX})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_stopUart'] = function(block) {
+    const NUM = block.getFieldValue('NUM');
+    
+    const pythonCode = `uart${NUM}.deinit()\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_writeUart'] = function(block) {
+    const NUM = block.getFieldValue('NUM');
+    const TEXT = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'TEXT');
+    const pythonCode = `uart${NUM}.write(str(${TEXT}))\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_writeUartByte'] = function(block) {
+    const NUM = block.getFieldValue('NUM');
+    const TEXT = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'TEXT');
+    // const arr = TEXT.split(",").map(Number);
+    const realArr = (TEXT.trim().replace(/^["']|["']$/g, '')).split(",").map(Number)
+    const pythonCode = `uart${NUM}.write(bytes([${realArr}]))\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readUart'] = function(block) {
+
+    const NUM = block.getFieldValue('NUM');
+    const pythonCode = `uart${NUM}.readline()`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readByteUart'] = function(block) {
+
+    const NUM = block.getFieldValue('NUM');
+    const pythonCode = `uart${NUM}.read(1)`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_uartAvail'] = function(block) {
+
+    const NUM = block.getFieldValue('NUM');
+    const pythonCode = `uart${NUM}.any()`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['uart'] = "from espmore import UART";
+        Blockly.Python.variables_[`uart${NUM}`] = `uart${NUM}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_startI2CSDA'] = function(block) {
+    const I2C = block.getFieldValue('I2C');
+    const FREQ = block.getFieldValue('FREQ');
+    const SDA = Blockly.Python.valueToCode(block, 'SDA', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'SDA');
+    const SCL = Blockly.Python.valueToCode(block, 'SCL', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'SCL');
+    const pythonCode = `i2c${I2C} = I2C(${I2C}, scl=Pin(${SCL}), sda=Pin(${SDA}), freq=${FREQ})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['I2C'] = "from espmore import I2C, Pin";
+        Blockly.Python.variables_[`i2c${I2C}`] = `i2c${I2C}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_getAllDevice'] = function(block) {
+    const PORT = block.getFieldValue('PORT');
+    const pythonCode = `i2c${PORT}.scan()`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['I2C'] = "from espmore import I2C, Pin";
+        Blockly.Python.variables_[`i2c${PORT}`] = `i2c${PORT}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readBytesI2C'] = function(block) {
+    const PORT = block.getFieldValue('PORT');
+    const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM');
+    const ADDR = Blockly.Python.valueToCode(block, 'ADDR', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'ADDR');
+    const pythonCode = `i2c${PORT}.readfrom(${ADDR}, ${NUM}, True)`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['I2C'] = "from espmore import I2C, Pin";
+        Blockly.Python.variables_[`i2c${PORT}`] = `i2c${PORT}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_writeI2C'] = function(block) {
+    const I2C = block.getFieldValue('I2C');
+    const NUM1 = Blockly.Python.valueToCode(block, 'NUM1', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM1');
+    const NUM2 = Blockly.Python.valueToCode(block, 'NUM2', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM2');
+    const pythonCode = `i2c${I2C}.writeto(${NUM2}, bytes(${NUM1}), True)\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['I2C'] = "from espmore import I2C, Pin";
+        Blockly.Python.variables_[`i2c${I2C}`] = `i2c${I2C}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+function toBinaryArray(n) {
+    return [(n >> 1) & 1, n & 1];
+}
+Blockly.Python['Esp32S4SMore_startSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+    const SCK = Blockly.Python.valueToCode(block, 'SCK', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'SCK');
+    const MOSI = Blockly.Python.valueToCode(block, 'MOSI', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'MOSI');
+    const MISO = Blockly.Python.valueToCode(block, 'MISO', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'MISO');
+    const FIRST = block.getFieldValue('FIRST');
+    const MODE = block.getFieldValue('MODE');
+    let mode = toBinaryArray(MODE)
+    const pythonCode = `spi${SPI+1} = SPI(${SPI}, 500000, sck=Pin(${SCK}), miso=Pin(${MISO}), mosi=Pin(${MOSI}), firstbit=SPI.${FIRST}, polarity=${mode[0]}, phase=${mode[1]})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return pythonCode;
+    }
+    return '';
+};
+Blockly.Python['Esp32S4SMore_stopSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+
+    const pythonCode = `spi${SPI+1}.deinit()\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_sendSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+    const VAR = Blockly.Python.valueToCode(block, 'VAR', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VAR');
+    const pythonCode = `spi${SPI+1}.write(${VAR})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_sendReciveSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+    const VAR1 = Blockly.Python.valueToCode(block, 'VAR1', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VAR1');
+    const VAR2 = Blockly.Python.valueToCode(block, 'VAR2', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VAR2');
+    const pythonCode = `spi${SPI+1}.write_readinto(${VAR1}, ${VAR2})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return pythonCode;
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readBytesSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+    const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'NUM');
+    const pythonCode = `spi${SPI+1}.read(${NUM})`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+
+Blockly.Python['Esp32S4SMore_readIntoSpi'] = function(block) {
+    const SPI = block.getFieldValue('SPI');
+    const VAR = Blockly.Python.valueToCode(block, 'VAR', Blockly.Python.ORDER_NONE) || Blockly.Python.statementToCode(block,'VAR');
+    const pythonCode = `spi${SPI+1}.readinto(${VAR})\n`
+    if(isCurrentBlockHat(block)){
+        Blockly.Python.definitions_['SPI'] = "from espmore import SPI, Pin";
+        Blockly.Python.variables_[`spi${SPI+1}`] = `spi${SPI+1}=None`
+        return pythonCode;
     }
     return '';
 };
