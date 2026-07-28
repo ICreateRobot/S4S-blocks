@@ -222,7 +222,7 @@ Blockly.Python.finish = function(code) {
         var repeatFunctions = ret.match(/:\n *repeat\(\)\n/g);
 
         for (var func in repeatFunctions) {
-            var spaceLength = repeatFunctions[func].match(/\s+/g)[0].length;
+            var spaceLength = repeatFunctions[func].match(/\s+/g)[0].length-1;
             ret = ret.replace(/:\n *repeat\(\)\n/, ':\n' + ' '.repeat(spaceLength) + 'pass\n');
         }
 

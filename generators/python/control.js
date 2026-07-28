@@ -35,7 +35,7 @@ Blockly.Python['control_wait'] = function(block) {
     }
 
     if(isCurrentBlockHat(block)){
-        Blockly.Python.definitions_['import time'] = "import time";
+        // Blockly.Python.definitions_['import time'] = "import time";
         return code;
     }
     return '';
@@ -69,12 +69,16 @@ Blockly.Python['control_forever'] = function(block) {
         Blockly.Python.firstLoop = false;
     }
 
+    console.log('1:',code)
     var code = `while True:\n`;
     code += branch;
+    console.log('2:',code)
     code += Blockly.Python.INDENT + "repeat()\n";
+    console.log('3:',code)
     code += Blockly.Python.INDENT + "time.sleep(0.01)\n"
 
     if(isCurrentBlockHat(block)){
+        console.log('4:',code)
         return code;
     }
     return '';
