@@ -1174,7 +1174,7 @@ Blockly.Python['Esp32S4S_stopAudio'] = function(block) {
 Blockly.Python['Esp32S4S_setDigital'] = function(block) {
     const PIN = block.getFieldValue('PIN');
     const CHOICE = block.getFieldValue('CHOICE');
-    const pythonCode = `esp_pin.digitalWrite(${PIN},${Number(CHOICE)})\n`;
+    const pythonCode = `esp_pin.digitalWrite('${PIN}',${Number(CHOICE)})\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode;
@@ -1186,7 +1186,7 @@ Blockly.Python['Esp32S4S_setDigital'] = function(block) {
 Blockly.Python['Esp32S4S_setPwm'] = function(block) {
     const PIN = block.getFieldValue('PIN');
     const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE);
-    const pythonCode = `esp_pin.analogWrite(${PIN},${Number(NUM)})\n`;
+    const pythonCode = `esp_pin.analogWrite('${PIN}',${Number(NUM)})\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode;
@@ -1197,7 +1197,7 @@ Blockly.Python['Esp32S4S_setPwm'] = function(block) {
 //读取数字引脚
 Blockly.Python['Esp32S4S_readDigitalPin'] = function(block) {
     const PIN = block.getFieldValue('PIN');
-    const pythonCode = `esp_pin.digitalRead(${PIN})`;
+    const pythonCode = `esp_pin.digitalRead('${PIN}')`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
@@ -1207,7 +1207,7 @@ Blockly.Python['Esp32S4S_readDigitalPin'] = function(block) {
 //读取模拟引脚
 Blockly.Python['Esp32S4S_readAnalogPin'] = function(block) {
     const PIN = block.getFieldValue('PIN');
-    const pythonCode = `esp_pin.analogRead(${PIN})`;
+    const pythonCode = `esp_pin.analogRead('${PIN}')`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
@@ -1218,7 +1218,7 @@ Blockly.Python['Esp32S4S_readAnalogPin'] = function(block) {
 Blockly.Python['Esp32S4S_readPulse'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
     const NUM = Blockly.Python.valueToCode(block, 'NUM', Blockly.Python.ORDER_NONE);
-    const pythonCode = `esp_pin.pulseIn(${CHOICE},1,${Number(NUM)})`;
+    const pythonCode = `esp_pin.pulseIn('${CHOICE}',1,${Number(NUM)})`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
@@ -1290,7 +1290,7 @@ Blockly.Python['Esp32S4S_readString'] = function(block) {
 //读取数据直到满足条件
 Blockly.Python['Esp32S4S_readUntil'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
-    const pythonCode = `uart.readline('${CHOICE}')`;
+    const pythonCode = `uart.read_until('${CHOICE}')`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
