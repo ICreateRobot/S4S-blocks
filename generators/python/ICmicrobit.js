@@ -1206,7 +1206,7 @@ Blockly.Python['MicrobitIcreate_ICM_speakerOff'] = function(block) {
 Blockly.Python['MicrobitIcreate_ICM_uartWrite'] = function(block) {
     const Text = Blockly.Python.valueToCode(block, 'TEXT',Blockly.Python.ORDER_NONE);
 
-    const pythonCode = `print(${Text})\n`;
+    const pythonCode = `Link_uart.print(${Text})\n`;
     let parent = block;
     while (parent.getParent()) {
       parent = parent.getParent();
