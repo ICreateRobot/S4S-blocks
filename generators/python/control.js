@@ -29,9 +29,19 @@ Blockly.Python['control_wait'] = function(block) {
 
     var code=''
     if(arg1=='s'){
-        code = "time.sleep(" + arg0 + ")\n";
+        if(vm.runtime.currentDevice=='ESP32'){
+            code = "await asyncio.sleep_ms(" + arg0*1000 + ")\n";
+        }else{
+            code = "time.sleep(" + arg0 + ")\n";
+        }
+        
     }else{
-        code = "time.sleep(" + arg0/1000 + ")\n";
+        if(vm.runtime.currentDevice=='ESP32'){
+            code = "await asyncio.sleep_ms(" + arg0 + ")\n";
+        }else{
+            code = "time.sleep(" + arg0/1000 + ")\n";
+        }
+        
     }
 
     if(isCurrentBlockHat(block)){
@@ -69,16 +79,16 @@ Blockly.Python['control_forever'] = function(block) {
         Blockly.Python.firstLoop = false;
     }
 
-    console.log('1:',code)
     var code = `while True:\n`;
     code += branch;
-    console.log('2:',code)
     code += Blockly.Python.INDENT + "repeat()\n";
-    console.log('3:',code)
-    code += Blockly.Python.INDENT + "time.sleep(0.01)\n"
-
+    if(vm.runtime.currentDevice=='ESP32'){
+        code += Blockly.Python.INDENT + "await asyncio.sleep_ms(10)\n"
+    }else{
+        code += Blockly.Python.INDENT + "time.sleep(0.01)\n"
+    }
+    
     if(isCurrentBlockHat(block)){
-        console.log('4:',code)
         return code;
     }
     return '';
