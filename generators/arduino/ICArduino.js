@@ -110,6 +110,36 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_sound'] = function(block) {
     var code =`hw_esp_audio.get_sound_level()`;
     return [code, Blockly.Arduino.ORDER_NONE]
 };
+//磁场强度
+Blockly.Arduino['ArduinoS4S_magnetStrength'] = function(block) {
+
+    const CHOICE = block.getFieldValue('CHOICE');
+    const TYPE = block.getFieldValue('TYPE');
+    let code
+    if(TYPE == '0'){
+        code = `hw_magnetometer.getRawMagnetic${CHOICE}()`;
+    }else{
+        code = `hw_magnetometer.getGaussField${CHOICE}()`;
+    }
+    
+
+    if(isCurrentBlockHat(block)){
+        return [code, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
+//加速度
+Blockly.Arduino['ArduinoS4S_acceleration'] = function(block) {
+
+    const CHOICE = block.getFieldValue('CHOICE');
+    const TYPE = block.getFieldValue('TYPE');
+    const code = `hw_gyro.readFloat${TYPE}${CHOICE}()`;
+
+    if(isCurrentBlockHat(block)){
+        return [code, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
 //开始录音
 Blockly.Arduino['ArduinoS4S_ICA_S4S_startRecording'] = function(block) {
     let NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE)|| Blockly.Arduino.statementToCode(block,'NUM');

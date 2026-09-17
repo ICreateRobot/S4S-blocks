@@ -1079,6 +1079,36 @@ Blockly.Python['Esp32S4S_soundLevel'] = function(block) {
     }
     return '';
 };
+//磁场强度
+Blockly.Python['Esp32S4S_magnetStrength'] = function(block) {
+
+    const CHOICE = block.getFieldValue('CHOICE');
+    const TYPE = block.getFieldValue('TYPE');
+    let pythonCode
+    if(TYPE == '0'){
+        pythonCode = `magnetometer.getRawMagnetic${CHOICE}()`;
+    }else{
+        pythonCode = `magnetometer.getGaussField${CHOICE}()`;
+    }
+    
+
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
+//加速度
+Blockly.Python['Esp32S4S_acceleration'] = function(block) {
+
+    const CHOICE = block.getFieldValue('CHOICE');
+    const TYPE = block.getFieldValue('TYPE');
+    const pythonCode = `gyro.readFloat${TYPE}${CHOICE}()`;
+
+    if(isCurrentBlockHat(block)){
+        return [pythonCode, Blockly.Python.ORDER_NONE];
+    }
+    return '';
+};
 function trimQuotes(str) {
     return str.replace(/^["']|["']$/g, '');
   }
