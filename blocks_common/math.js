@@ -1636,3 +1636,78 @@ Blockly.Blocks['numres1D60'] = {
     });
   }
 };
+
+
+// 限制大小0_320
+Blockly.Blocks['numres0D320'] = {
+  /**
+   * Block for angle picker.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_number",
+          "name": "NUM",
+          "value": 0,
+          "min": 0,
+          "max": 320,
+          "precision": 1
+        }
+      ],
+      "output": "Number",
+      "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      "colour": Blockly.Colours.textField,
+      "colourSecondary": Blockly.Colours.textField,
+      "colourTertiary": Blockly.Colours.textField,
+      "colourQuaternary": Blockly.Colours.textField
+    });
+    const field = this.getField('NUM');
+    field.setValidator(function(newValue) {
+      const value = Number(newValue);
+      if (isNaN(value)) return null;
+      if (value < 0) return 0;
+      if (value > 320) return 320;
+      return value;
+    });
+  }
+};
+
+// 限制大小0_240
+Blockly.Blocks['numres0D240'] = {
+  /**
+   * Block for angle picker.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_number",
+          "name": "NUM",
+          "value": 0,
+          "min": 0,
+          "max": 240,
+          "precision": 1
+        }
+      ],
+      "output": "Number",
+      "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+      "colour": Blockly.Colours.textField,
+      "colourSecondary": Blockly.Colours.textField,
+      "colourTertiary": Blockly.Colours.textField,
+      "colourQuaternary": Blockly.Colours.textField
+    });
+    const field = this.getField('NUM');
+    field.setValidator(function(newValue) {
+      const value = Number(newValue);
+      if (isNaN(value)) return null;
+      if (value < 0) return 0;
+      if (value > 240) return 240;
+      return value;
+    });
+  }
+};

@@ -591,11 +591,11 @@ Blockly.Python['UIEditor_whenButtonClicked'] = function(block) {
         code,
         Blockly.Python.INDENT
     ):Blockly.Python.INDENT+'pass'+'\n'
-    const pythonCode1 = `def ${BUTTON}_clicked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
+    const pythonCode1 = `async def ${BUTTON}_clicked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
     const pythonCode2=`def ${BUTTON}_event_handler(event_struct):
     event = event_struct.get_code()
     if event == ${BUTTON}.clicked:
-        ${BUTTON}_clicked_event(event_struct)
+        asyncio.create_task(${BUTTON}_clicked_event(event_struct))
     return
 
 ${BUTTON}.set_callback(${BUTTON}_event_handler)\n`;
@@ -780,16 +780,16 @@ Blockly.Python['UIEditor_whenSwitchChanged'] = function(block) {
     ):Blockly.Python.INDENT+'pass'+'\n'
     console.log('开关状态')
     console.log(STATE)
-    const pythonCode1 = `def ${SWITCH}_checked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${isChecked? childCode:''}`
-    const pythonCode2 = `def ${SWITCH}_unchecked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${!isChecked? childCode:''}`
+    const pythonCode1 = `async def ${SWITCH}_checked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${isChecked? childCode:''}`
+    const pythonCode2 = `async def ${SWITCH}_unchecked_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${!isChecked? childCode:''}`
     const pythonCode3 = `def ${SWITCH}_event_handler(event_struct):
     event = event_struct.get_code()
     obj = event_struct.get_target_obj()
     if event == ${SWITCH}.value_changed:
         if obj.has_state(${SWITCH}.state_checked):
-            ${SWITCH}_checked_event(event_struct)
+            asyncio.create_task(${SWITCH}_checked_event(event_struct))
         else:
-            ${SWITCH}_unchecked_event(event_struct)
+            asyncio.create_task(${SWITCH}_unchecked_event(event_struct))
     return
 ${SWITCH}.set_callback(${SWITCH}_event_handler)\n`;
 
@@ -973,12 +973,12 @@ Blockly.Python['UIEditor_whenSliderChanged'] = function(block) {
         code,
         Blockly.Python.INDENT
     ):Blockly.Python.INDENT+'pass'+'\n'
-    const pythonCode1 = `def ${SLIDER}_value_changed_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
+    const pythonCode1 = `async def ${SLIDER}_value_changed_event(event_struct):\n${childCode.includes('pass')?'':globalLine}${childCode}`
 
     const pythonCode2=`def ${SLIDER}_event_handler(event_struct):
     event = event_struct.get_code()
     if event == ${SLIDER}.value_changed:
-        ${SLIDER}_value_changed_event(event_struct)
+        asyncio.create_task(${SLIDER}_value_changed_event(event_struct))
     return
 
 ${SLIDER}.set_callback(${SLIDER}_event_handler)\n`;

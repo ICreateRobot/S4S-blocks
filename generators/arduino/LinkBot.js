@@ -446,6 +446,43 @@ Blockly.Arduino['LinkBotActuators_ICM_S4S_ultrSet'] = function(block) {
     return '';
 };
 
+//超声波
+Blockly.Arduino['Ultrasonic_ICM_S4S_ultrGet'] = function(block) {
+    let TYPE = block.getFieldValue('TYPE');
+    TYPE='ULTRASONIC_'+getAfterDot(TYPE)
+    const ArduinoCode = `hw_cultr.ultrasonic_get_distance(hw_cultr.${TYPE})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
+
+// 超声波判断
+Blockly.Arduino['Ultrasonic_ICM_S4S_ultrGetLog'] = function(block) {
+    let TYPE = block.getFieldValue('TYPE');
+    const CHOICE = block.getFieldValue('CHOICE');
+    const NUM = Blockly.Arduino.valueToCode(block, 'NUM', Blockly.Arduino.ORDER_NONE)|| Blockly.Arduino.statementToCode(block,'NUM');
+    TYPE='ULTRASONIC_'+getAfterDot(TYPE)
+    const ArduinoCode = `hw_cultr.ultrasonic_get_distance(hw_cultr.${TYPE}) ${CHOICE} ${NUM}`;
+
+    if(isCurrentBlockHat(block)){
+        return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+    
+};
+//超声波灯
+Blockly.Arduino['Ultrasonic_ICM_S4S_ultrSet'] = function(block) {
+    let color= Blockly.Arduino.valueToCode(block, 'COL',Blockly.Arduino.ORDER_NONE) || Blockly.Arduino.statementToCode(block,'COL');
+    const [r, g, b] = color.replace('#', '').match(/.{1,2}/g).map(x => parseInt(x, 16));
+   
+    const ArduinoCode = `hw_cultr.ultrasonic_set_color(${r},${g},${b});\n`;
+    
+    return ArduinoCode
+    return '';
+};
+
 //#############################################巡线###########################################
 //灰度学习
 Blockly.Arduino['LinkBotSensors_ICM_S4S_setMode'] = function(block) {
@@ -533,6 +570,102 @@ Blockly.Arduino['LinkBotSensors_ICM_S4S_colorGet'] = function(block) {
 
 //巡线获取黑线
 Blockly.Arduino['LinkBotSensors_ICM_S4S_blackGet'] = function(block) {
+    let pinChoice = block.getFieldValue('CHOICE');
+    pinChoice='LINE_SENSOR_'+getAfterDot(pinChoice)
+    const ArduinoCode = `hw_gray.line_sensor_detect_line(hw_gray.${pinChoice})==1`;
+    
+    if(isCurrentBlockHat(block)){
+        return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
+
+//灰度学习
+Blockly.Arduino['LineFollow_ICM_S4S_setMode'] = function(block) {
+    let CHOICE = block.getFieldValue('CHOICE');
+    CHOICE='LINE_SENSOR_'+getAfterDot(CHOICE)
+    const ArduinoCode = `hw_gray.line_sensor_learn(hw_gray.${CHOICE});\n`;
+    
+    return ArduinoCode
+    return '';
+};
+
+//二值学习
+Blockly.Arduino['LineFollow_ICM_S4S_binaryStudy'] = function(block) {
+    const ArduinoCode = `gray.binary_study();\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return ArduinoCode;
+    }
+    return '';
+};
+
+//颜色学习
+Blockly.Arduino['LineFollow_ICM_S4S_colorStudy'] = function(block) {
+    const pinChoice = block.getFieldValue('CHOICE');
+    //const code = DICT_studyColor[pinChoice];
+
+    const ArduinoCode = `gray.color_study(${pinChoice});\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return ArduinoCode;
+    }
+    return '';
+};
+
+//清空颜色学习
+Blockly.Arduino['LineFollow_ICM_S4S_colorClear'] = function(block) {
+    const ArduinoCode = `gray.clear_color();\n`;
+    
+    let parent = block;
+    while (parent.getParent()) {
+      parent = parent.getParent();
+    }
+    if (parent.type=='event_when' || parent.type=='procedures_definition') {
+      return ArduinoCode;
+    }
+    return '';
+};
+
+//巡线获取灰度值
+Blockly.Arduino['LineFollow_ICM_S4S_grayGet'] = function(block) {
+    let pinChoice = block.getFieldValue('CHOICE');
+
+    pinChoice='LINE_SENSOR_'+getAfterDot(pinChoice)
+    const ArduinoCode = `hw_gray.line_sensor_gray(hw_gray.${pinChoice})`;
+    
+    if(isCurrentBlockHat(block)){
+        return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
+
+//巡线获取颜色
+Blockly.Arduino['LineFollow_ICM_S4S_colorGet'] = function(block) {
+    let pinChoice = block.getFieldValue('CHOICE');
+    let pinChoice1 = block.getFieldValue('CHOICE1');
+    //const code = DICT_studyColor[pinChoice1];
+    pinChoice1='LINE_SENSOR_'+getAfterDot(pinChoice1)
+    pinChoice ='LINE_SENSOR_'+getAfterDot(pinChoice)
+
+    const ArduinoCode = `hw_gray.line_sensor_color(hw_gray.${pinChoice},hw_gray.${pinChoice1})==1`;
+    
+    if(isCurrentBlockHat(block)){
+        return [ArduinoCode, Blockly.Arduino.ORDER_NONE];
+    }
+    return '';
+};
+
+//巡线获取黑线
+Blockly.Arduino['LineFollow_ICM_S4S_blackGet'] = function(block) {
     let pinChoice = block.getFieldValue('CHOICE');
     pinChoice='LINE_SENSOR_'+getAfterDot(pinChoice)
     const ArduinoCode = `hw_gray.line_sensor_detect_line(hw_gray.${pinChoice})==1`;
