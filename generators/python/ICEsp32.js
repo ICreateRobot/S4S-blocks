@@ -1179,9 +1179,9 @@ Blockly.Python['Esp32S4S_setVolume'] = function(block) {
 };
 //播放音频
 Blockly.Python['Esp32S4S_playAudio'] = function(block) {
-    const TEXT = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE);
-
-    const pythonCode = `audio.play_audio(${TEXT})\n`;
+    let TEXT = Blockly.Python.valueToCode(block, 'TEXT', Blockly.Python.ORDER_NONE);
+    TEXT=trimQuotes(TEXT)
+    const pythonCode = `audio.play_audio("${TEXT}.wav")\n`;
 
     if(isCurrentBlockHat(block)){
         return pythonCode
@@ -1309,7 +1309,7 @@ Blockly.Python['Esp32S4S_readByte'] = function(block) {
 
 //串口读取字符串
 Blockly.Python['Esp32S4S_readString'] = function(block) {
-    const pythonCode = `uart.readline()`;
+    const pythonCode = `await uart.readline()`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
@@ -1320,7 +1320,7 @@ Blockly.Python['Esp32S4S_readString'] = function(block) {
 //读取数据直到满足条件
 Blockly.Python['Esp32S4S_readUntil'] = function(block) {
     const CHOICE = block.getFieldValue('CHOICE');
-    const pythonCode = `uart.read_until('${CHOICE}')`;
+    const pythonCode = `await uart.read_until('${CHOICE}')`;
 
     if(isCurrentBlockHat(block)){
         return [pythonCode, Blockly.Python.ORDER_NONE];
