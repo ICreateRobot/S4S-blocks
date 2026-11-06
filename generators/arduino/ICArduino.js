@@ -244,7 +244,7 @@ Blockly.Arduino['ArduinoS4S_ICA_S4S_readableBytes'] = function(block) {
 };
 //读取单个字节
 Blockly.Arduino['ArduinoS4S_ICA_S4S_readByte'] = function(block) {
-    var code =`if_uart_comm.read()`;
+    var code =`if_uart_comm.read_string(0)`;
     return [code, Blockly.Arduino.ORDER_NONE]
 };
 //串口读取字符串
